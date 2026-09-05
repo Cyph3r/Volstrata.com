@@ -1,0 +1,11 @@
+{
+  "_comment": "Copyright 2026 Volstrata.com - https://volstrata.com - Generic project-level mcp.json. Copy to mcp.json and replace YOUR_API_KEY with a key from https://volstrata.com/api-keys, or delete the headers object to use the public tools anonymously. Do not commit a file containing a real key. See docs/MCP_CLIENTS.md.",
+  "mcpServers": {
+    "volstrata": {
+      "url": "https://volstrata.com/api/v1/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}

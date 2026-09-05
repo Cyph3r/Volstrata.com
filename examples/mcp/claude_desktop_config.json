@@ -1,0 +1,11 @@
+{
+  "_comment": "Copyright 2026 Volstrata.com - https://volstrata.com - VolStrata MCP server entry. Replace YOUR_API_KEY with a key from https://volstrata.com/api-keys, or delete the headers object to use the public tools anonymously. The config file location and top-level key name vary by MCP client and version - see docs/MCP_CLIENTS.md.",
+  "mcpServers": {
+    "volstrata": {
+      "url": "https://volstrata.com/api/v1/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
