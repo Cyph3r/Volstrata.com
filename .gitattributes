@@ -1,0 +1,19 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+
+# Normalise everything to LF in the repository and on checkout. Contributors on
+# Windows can still have `core.autocrlf=true` locally without it reaching a blob.
+* text=auto eol=lf
+
+# docs/reference/openapi.json is the ONE exception, and it is load-bearing.
+#
+# scripts/sync_catalog.py saves the served specification byte-for-byte verbatim,
+# and the CDN serves it with CRLF line endings. scripts/check_drift.py then
+# BYTE-COMPARES the committed copy against a fresh fetch, so any line-ending
+# conversion — Git's on commit, or an editor's on save — breaks that comparison
+# and turns the `drift` job red on a pull request that never touched the file.
+#
+# `-text` disables all end-of-line conversion in both directions.
+docs/reference/openapi.json -text
+
+# Brand assets are byte-for-byte copies of the originals.
+assets/*.svg -text
