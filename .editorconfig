@@ -1,0 +1,39 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.{json,yml,yaml,md}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 4
+
+[*.{sh,mjs,js}]
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+
+# Brand assets are byte-for-byte copies of the originals — do not reformat.
+[assets/*.svg]
+insert_final_newline = false
+
+# The published specification is saved byte-for-byte as the API serves it, CRLF
+# line endings and all, and CI byte-compares it against a fresh fetch. Reformat
+# it — line endings, a trailing newline, trailing whitespace — and the drift
+# check fails. .gitattributes enforces the same thing on Git's side.
+[docs/reference/openapi.json]
+end_of_line = crlf
+insert_final_newline = false
+trim_trailing_whitespace = false

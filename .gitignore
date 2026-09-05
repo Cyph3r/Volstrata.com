@@ -1,0 +1,18 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+
+# Secrets — only .env.example is committed
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# JavaScript
+node_modules/
+
+# Drift-check scratch space
+.drift-tmp/
+
+# OS
+.DS_Store
