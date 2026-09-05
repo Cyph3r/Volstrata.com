@@ -1,0 +1,12 @@
+# Copyright 2026 Volstrata.com
+# Python examples for the VolStrata API -- https://volstrata.com/docs/api-sdks
+#
+# One dependency, on purpose. The API is plain HTTP + JSON, so everything in
+# this folder -- REST and MCP alike -- is built on `requests` plus the standard
+# library. There is no VolStrata package to install, and none of these examples
+# imports one.
+#
+#     python -m pip install -r requirements.txt
+#
+# Python 3.9 or newer.
+requests>=2.31
