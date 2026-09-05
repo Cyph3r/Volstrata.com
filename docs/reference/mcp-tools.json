@@ -1,0 +1,2946 @@
+{
+  "api_version": "2026-09-01",
+  "catalog_fingerprint": "sha256:07d2dfe48736de886fc12ba7e9405ad4bd1ae512397f32ecbb9f9a99737e0957",
+  "copyright": "Copyright 2026 Volstrata.com - https://volstrata.com",
+  "counts": {
+    "anonymous": 67,
+    "capability_tools": 174,
+    "meta_tools": 3,
+    "total": 177
+  },
+  "endpoint": "https://volstrata.com/api/v1/mcp",
+  "generator": {
+    "command": "python scripts/sync_catalog.py",
+    "do_not_edit": "Generated file - do not edit by hand. Regenerate with `python scripts/sync_catalog.py`; CI fails on any difference.",
+    "sources": {
+      "capabilities": "https://volstrata.com/api/v1/meta/capabilities",
+      "mcp": "https://volstrata.com/api/v1/mcp",
+      "openapi": "https://volstrata.com/api/openapi.json"
+    }
+  },
+  "protocol": "JSON-RPC 2.0",
+  "tools": [
+    {
+      "anonymous": true,
+      "description": "The universal dispatcher: invoke ANY VolStrata capability by name with its arguments — the same gated route tools/call runs. {name, arguments}. A capability your plan can't run rides back as an error naming the required plan. Discover names with catalog.search.",
+      "domain": "capability",
+      "kind": "meta",
+      "method": null,
+      "name": "capability.call",
+      "params": [
+        "arguments?",
+        "name"
+      ],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "Call any capability"
+    },
+    {
+      "anonymous": true,
+      "description": "Search the FULL VolStrata capability catalog by keyword, domain, or plan tier WITHOUT registering every tool. Returns matching capability descriptors with their input schema, plan floor, and whether your plan unlocks each. Then invoke any match with capability.call. Use this first instead of loading all tools.",
+      "domain": "catalog",
+      "kind": "meta",
+      "method": null,
+      "name": "catalog.search",
+      "params": [
+        "cursor?",
+        "domain?",
+        "limit?=25",
+        "query?",
+        "tier?",
+        "unlocked_only?=false"
+      ],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "Search the capability catalog"
+    },
+    {
+      "anonymous": true,
+      "description": "Search VolStrata's methodology glossary — every metric definition (GEX, DEX, charm, vanna, gamma flip, max pain, air pocket, …). Returns matching metric slugs with a short definition and a body snippet, so the model explains a term in OUR vocabulary before calling tools.",
+      "domain": "docs",
+      "kind": "meta",
+      "method": null,
+      "name": "docs.search",
+      "params": [
+        "limit?=10",
+        "query"
+      ],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "Search the metric glossary"
+    },
+    {
+      "anonymous": true,
+      "domain": "accuracy",
+      "kind": "capability",
+      "method": "GET",
+      "name": "accuracy.pin_contest",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/accuracy/pin_contest",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "accuracy",
+      "kind": "capability",
+      "method": "GET",
+      "name": "accuracy.pin_leaderboard",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/accuracy/pin_leaderboard",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "accuracy",
+      "kind": "capability",
+      "method": "GET",
+      "name": "accuracy.scoreboard",
+      "params": [
+        "ticker?",
+        "format?=json"
+      ],
+      "path": "/api/v1/accuracy/scoreboard",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "accuracy",
+      "kind": "capability",
+      "method": "GET",
+      "name": "accuracy.tape",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/accuracy/tape",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "ai",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ai.analysis",
+      "params": [
+        "ticker=SPX",
+        "expiry?=today",
+        "at?=latest",
+        "chart_type?=gex",
+        "halo?=30",
+        "model?",
+        "format?=json"
+      ],
+      "path": "/api/v1/ai/analysis",
+      "policy_key": "ai_brief",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "ai",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ai.brief",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/ai/brief",
+      "policy_key": "ai_brief",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "ai",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ai.eta",
+      "params": [
+        "chart_type?=gex",
+        "model?",
+        "has_image?=true",
+        "format?=json"
+      ],
+      "path": "/api/v1/ai/eta",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "ai",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ai.market_summary",
+      "params": [
+        "regime?",
+        "format?=json"
+      ],
+      "path": "/api/v1/ai/market_summary",
+      "policy_key": "ai_brief",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "ai",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ai.setup_explainer",
+      "params": [
+        "ticker=SPX",
+        "stats?=false",
+        "format?=json"
+      ],
+      "path": "/api/v1/ai/setup_explainer",
+      "policy_key": "ai_brief",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "alerts",
+      "kind": "capability",
+      "method": "GET",
+      "name": "alerts.rules",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/alerts/rules",
+      "policy_key": "alerts",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "alerts",
+      "kind": "capability",
+      "method": "GET",
+      "name": "alerts.signal_stats",
+      "params": [
+        "ticker?=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/alerts/signal_stats",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "analytics",
+      "kind": "capability",
+      "method": "GET",
+      "name": "analytics.chain_signals",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/analytics/chain_signals",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "backtest",
+      "kind": "capability",
+      "method": "GET",
+      "name": "backtest.meta",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/backtest/meta",
+      "policy_key": "backtest",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "backtest",
+      "kind": "capability",
+      "method": "GET",
+      "name": "backtest.run",
+      "params": [
+        "ticker=SPX",
+        "preset?",
+        "rule?",
+        "direction?=long",
+        "format?=json"
+      ],
+      "path": "/api/v1/backtest/run",
+      "policy_key": "backtest",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "briefing",
+      "kind": "capability",
+      "method": "GET",
+      "name": "briefing.gameplan",
+      "params": [
+        "ticker?",
+        "day?",
+        "days?=14",
+        "format?=json"
+      ],
+      "path": "/api/v1/briefing/gameplan",
+      "policy_key": "ai_brief",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "briefing",
+      "kind": "capability",
+      "method": "GET",
+      "name": "briefing.weekly",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/briefing/weekly",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "calendar",
+      "kind": "capability",
+      "method": "GET",
+      "name": "calendar.combined",
+      "params": [
+        "range?=7d",
+        "types?=all",
+        "ticker?",
+        "limit?=50",
+        "cursor?",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/calendar/combined",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "calendar",
+      "kind": "capability",
+      "method": "GET",
+      "name": "calendar.corporate",
+      "params": [
+        "range?=30d",
+        "ticker?",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/calendar/corporate",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "calendar",
+      "kind": "capability",
+      "method": "GET",
+      "name": "calendar.events",
+      "params": [
+        "range?=7d",
+        "types?=all",
+        "importance_min?=0",
+        "region?=all",
+        "ticker?",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/calendar/events",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "chain",
+      "kind": "capability",
+      "method": "GET",
+      "name": "chain.latest",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'today', 'desc': 'expiry window', 'enum': ['today', 'tomorrow', 'weekly', 'quarter'], 'name': 'window', 'required': False}",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/chain/latest",
+      "policy_key": "chain_read",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "compare",
+      "kind": "capability",
+      "method": "GET",
+      "name": "compare.tickers",
+      "params": [
+        "ticker=SPX",
+        "t1?=open",
+        "t2?=now",
+        "format?=json"
+      ],
+      "path": "/api/v1/compare/tickers",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.funding",
+      "params": [
+        "symbol=BTC",
+        "hours?=24",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/funding",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.history",
+      "params": [
+        "symbol=BTC",
+        "hours?=24",
+        "interval?=1hour",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/history",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.liquidations",
+      "params": [
+        "symbol=BTC",
+        "count?=100",
+        "kind?=future",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/liquidations",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.onchain",
+      "params": [
+        "symbol=BTC",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/onchain",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.open_interest",
+      "params": [
+        "symbol=BTC",
+        "aggregate?=true",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/open_interest",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.positioning",
+      "params": [
+        "symbol=BTC",
+        "period?=1H",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/positioning",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.roster",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/roster",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "crypto",
+      "kind": "capability",
+      "method": "GET",
+      "name": "crypto.snapshot",
+      "params": [
+        "symbol=BTC",
+        "liq_count?=50",
+        "funding_hours?=24",
+        "format?=json"
+      ],
+      "path": "/api/v1/crypto/snapshot",
+      "policy_key": "crypto",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "cvd",
+      "kind": "capability",
+      "method": "GET",
+      "name": "cvd.series",
+      "params": [
+        "ticker=SPX",
+        "symbol?",
+        "tf?=1m",
+        "since?",
+        "t?",
+        "limit?=600",
+        "format?=json"
+      ],
+      "path": "/api/v1/cvd/series",
+      "policy_key": "cvd",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "cvd",
+      "kind": "capability",
+      "method": "GET",
+      "name": "cvd.signal",
+      "params": [
+        "ticker=SPX",
+        "symbol?",
+        "lookback?=100",
+        "tol_pct?=0.0015",
+        "format?=json"
+      ],
+      "path": "/api/v1/cvd/signal",
+      "policy_key": "cvd",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "dealergamma",
+      "kind": "capability",
+      "method": "GET",
+      "name": "dealergamma.history",
+      "params": [
+        "ticker=SPX",
+        "days?=120",
+        "format?=json"
+      ],
+      "path": "/api/v1/dealergamma/history",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "dealergamma",
+      "kind": "capability",
+      "method": "GET",
+      "name": "dealergamma.tickers",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/dealergamma/tickers",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "docs",
+      "kind": "capability",
+      "method": "GET",
+      "name": "docs.metric",
+      "params": [
+        "metric",
+        "format?=json"
+      ],
+      "path": "/api/v1/docs/metric",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "docs",
+      "kind": "capability",
+      "method": "GET",
+      "name": "docs.metrics",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/docs/metrics",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "earnings",
+      "kind": "capability",
+      "method": "GET",
+      "name": "earnings.calendar",
+      "params": [
+        "range?=7d",
+        "view?=upcoming",
+        "window?=today",
+        "{'default': 'all', 'desc': 'symbol universe', 'enum': ['all', 'mega'], 'name': 'universe', 'required': False}",
+        "ticker?",
+        "min_implied?=0",
+        "has_estimate?=false",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/earnings/calendar",
+      "policy_key": "earnings",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "exposure",
+      "kind": "capability",
+      "method": "GET",
+      "name": "exposure.timeline",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "day?",
+        "format?=json"
+      ],
+      "path": "/api/v1/exposure/timeline",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "flow",
+      "kind": "capability",
+      "method": "GET",
+      "name": "flow.leaderboard",
+      "params": [
+        "ticker?",
+        "types?=all",
+        "golden_only?=false",
+        "source?=all",
+        "day?",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/flow/leaderboard",
+      "policy_key": "flow_analytics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "forecast",
+      "kind": "capability",
+      "method": "GET",
+      "name": "forecast.cone",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/forecast/cone",
+      "policy_key": "forecast",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "forecast",
+      "kind": "capability",
+      "method": "GET",
+      "name": "forecast.scorecard",
+      "params": [
+        "ticker=SPX",
+        "sessions?=5",
+        "format?=json"
+      ],
+      "path": "/api/v1/forecast/scorecard",
+      "policy_key": "forecast",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "fundamentals",
+      "kind": "capability",
+      "method": "GET",
+      "name": "fundamentals.company",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/fundamentals/company",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "gammapin",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gammapin.today",
+      "params": [
+        "ticker=SPX",
+        "date?",
+        "format?=json"
+      ],
+      "path": "/api/v1/gammapin/today",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "gate",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gate.config",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/gate/config",
+      "policy_key": "gamma_gate",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "gate",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gate.counterfactual",
+      "params": [
+        "days?=30",
+        "format?=json"
+      ],
+      "path": "/api/v1/gate/counterfactual",
+      "policy_key": "gamma_gate",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "gate",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gate.decisions",
+      "params": [
+        "symbol?",
+        "verdict?",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/gate/decisions",
+      "policy_key": "gamma_gate",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "gate",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gate.strategies",
+      "params": [
+        "slug?",
+        "format?=json"
+      ],
+      "path": "/api/v1/gate/strategies",
+      "policy_key": "gamma_gate",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": true,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.bars",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/bars",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.four",
+      "params": [
+        "ticker=SPX",
+        "view?=net",
+        "greek?=gamma",
+        "at?=latest",
+        "format?=json",
+        "fc?=false",
+        "version?"
+      ],
+      "path": "/api/v1/gex/four",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.gamma_flip",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/gamma_flip",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.history",
+      "params": [
+        "ticker=SPX",
+        "metrics?=core",
+        "window?=today",
+        "from?",
+        "to?",
+        "last?=30",
+        "limit?=30",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/history",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.levels",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/levels",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.maxpain",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/maxpain",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.metrics",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/metrics",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.named_levels",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/named_levels",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.neggex",
+      "params": [
+        "ticker=SPX",
+        "top?=10",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/neggex",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.netgex_multiexpiry",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/netgex_multiexpiry",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.posgex",
+      "params": [
+        "ticker=SPX",
+        "top?=10",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/posgex",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.profile",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'today', 'desc': 'expiry window', 'enum': ['today', 'tomorrow', 'weekly', 'quarter'], 'name': 'window', 'required': False}",
+        "{'default': 'gamma', 'desc': 'greek to profile', 'enum': ['gamma', 'delta', 'vanna', 'charm'], 'name': 'greek', 'required': False}",
+        "{'default': 'recompute', 'desc': 'curve construction method', 'enum': ['kde', 'recompute'], 'name': 'method', 'required': False}",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/profile",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.setup",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/setup",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.snapshot",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "view?=net",
+        "greek?=gamma",
+        "at?=latest",
+        "analysis?=false",
+        "predict?=false",
+        "format?=json",
+        "fc?=false",
+        "version?"
+      ],
+      "path": "/api/v1/gex/snapshot",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.walls",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/walls",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "gex",
+      "kind": "capability",
+      "method": "GET",
+      "name": "gex.zones",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/gex/zones",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "government",
+      "kind": "capability",
+      "method": "GET",
+      "name": "government.trades",
+      "params": [
+        "window?=30d",
+        "{'default': 'all', 'desc': 'legislative chamber', 'enum': ['all', 'house', 'senate'], 'name': 'chamber', 'required': False}",
+        "filing_type?=all",
+        "ptr_only?=false",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/government/trades",
+      "policy_key": "government",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.charm",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/charm",
+      "policy_key": "charm",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.color",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/color",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.dex",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/dex",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.gamma",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/gamma",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.rho",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/rho",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.speed",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/speed",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.tex",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/tex",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.ultima",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/ultima",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.vex",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/vex",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.vomma",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/vomma",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "greeks",
+      "kind": "capability",
+      "method": "GET",
+      "name": "greeks.zomma",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/greeks/zomma",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "ict",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ict.backtest",
+      "params": [
+        "ticker=SPX",
+        "tf?=1m",
+        "format?=json"
+      ],
+      "path": "/api/v1/ict/backtest",
+      "policy_key": "backtest",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "ict",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ict.candles",
+      "params": [
+        "ticker=SPX",
+        "tf?=1m",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/ict/candles",
+      "policy_key": "ict",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "ict",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ict.structure",
+      "params": [
+        "ticker=SPX",
+        "tf?=1m",
+        "gex?=true",
+        "format?=json"
+      ],
+      "path": "/api/v1/ict/structure",
+      "policy_key": "ict",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "insider",
+      "kind": "capability",
+      "method": "GET",
+      "name": "insider.feed",
+      "params": [
+        "ticker?",
+        "{'default': 'all', 'desc': 'transaction type filter', 'enum': ['all', 'buy', 'sell', 'other'], 'name': 'txn', 'required': False}",
+        "role?=all",
+        "window?=30d",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/insider/feed",
+      "policy_key": "insider_feed",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "insider",
+      "kind": "capability",
+      "method": "GET",
+      "name": "insider.filings",
+      "params": [
+        "ticker?",
+        "form?=4",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/insider/filings",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "journal",
+      "kind": "capability",
+      "method": "GET",
+      "name": "journal.entries",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/journal/entries",
+      "policy_key": "trade_journal",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "legislation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "legislation.bills",
+      "params": [
+        "{'default': 'all', 'desc': 'bill scope', 'enum': ['all', 'tracked', 'keyword'], 'name': 'scope', 'required': False}",
+        "{'default': 'all', 'desc': 'legislative chamber', 'enum': ['all', 'house', 'senate'], 'name': 'chamber', 'required': False}",
+        "status?",
+        "format?=json"
+      ],
+      "path": "/api/v1/legislation/bills",
+      "policy_key": "government",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.air_pockets",
+      "params": [
+        "ticker=SPX",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/levels/air_pockets",
+      "policy_key": "air_pockets",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.day",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/levels/day",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.day_report",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/levels/day_report",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.detail",
+      "params": [
+        "ticker=SPX",
+        "kind?=cw",
+        "days?",
+        "strikes?",
+        "format?=json"
+      ],
+      "path": "/api/v1/levels/detail",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.tradingview",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'json', 'desc': 'export encoding (Pine Script / CSV / plain text)', 'enum': ['json', 'txt', 'pine', 'csv'], 'name': 'format', 'required': False}"
+      ],
+      "path": "/api/v1/levels/tradingview",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.week",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/levels/week",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "levels",
+      "kind": "capability",
+      "method": "GET",
+      "name": "levels.week_report",
+      "params": [
+        "ticker=SPX",
+        "format?=json"
+      ],
+      "path": "/api/v1/levels/week_report",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.candles",
+      "params": [
+        "ticker=SPX",
+        "tf?=1m",
+        "from?",
+        "to?",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/market/candles",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.etf_constituents",
+      "params": [
+        "ticker=SPY",
+        "format?=json"
+      ],
+      "path": "/api/v1/market/etf_constituents",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.monitor",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/market/monitor",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.overview",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/market/overview",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.rotations",
+      "params": [
+        "tf?=1d",
+        "format?=json"
+      ],
+      "path": "/api/v1/market/rotations",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.seasonality",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/market/seasonality",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.snapshot",
+      "params": [
+        "tickers?=core",
+        "format?=json"
+      ],
+      "path": "/api/v1/market/snapshot",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market.status",
+      "params": [
+        "tickers?=SPX",
+        "fresh_within_sec?=900",
+        "format?=json"
+      ],
+      "path": "/api/v1/market/status",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "meta",
+      "kind": "capability",
+      "method": "GET",
+      "name": "meta.access",
+      "params": [
+        "tier?",
+        "format?=json"
+      ],
+      "path": "/api/v1/meta/access",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "meta",
+      "kind": "capability",
+      "method": "GET",
+      "name": "meta.capabilities",
+      "params": [
+        "domain?=all",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/meta/capabilities",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "news",
+      "kind": "capability",
+      "method": "GET",
+      "name": "news.feed",
+      "params": [
+        "ticker?",
+        "limit?=50",
+        "cursor?",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/news/feed",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "options_activity",
+      "kind": "capability",
+      "method": "GET",
+      "name": "options_activity.snapshot",
+      "params": [
+        "ticker?",
+        "vol_oi_only?=false",
+        "day?",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/options_activity/snapshot",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "orderflow",
+      "kind": "capability",
+      "method": "GET",
+      "name": "orderflow.hedging_proxy",
+      "params": [
+        "ticker=SPX",
+        "metric?=net_gex",
+        "{'default': 'latest', 'desc': 'expiry bucket', 'enum': ['latest', 'next'], 'name': 'bucket', 'required': False}",
+        "format?=json"
+      ],
+      "path": "/api/v1/orderflow/hedging_proxy",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "orderflow",
+      "kind": "capability",
+      "method": "GET",
+      "name": "orderflow.impulse",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'latest', 'desc': 'expiry bucket', 'enum': ['latest', 'next'], 'name': 'bucket', 'required': False}",
+        "metrics?=all",
+        "since?",
+        "day?",
+        "format?=json"
+      ],
+      "path": "/api/v1/orderflow/impulse",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "orderflow",
+      "kind": "capability",
+      "method": "GET",
+      "name": "orderflow.series",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'latest', 'desc': 'expiry bucket', 'enum': ['latest', 'next'], 'name': 'bucket', 'required': False}",
+        "metrics?=all",
+        "format?=json"
+      ],
+      "path": "/api/v1/orderflow/series",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "orderflow",
+      "kind": "capability",
+      "method": "GET",
+      "name": "orderflow.trade_side",
+      "params": [
+        "ticker=SPX",
+        "date?",
+        "format?=json"
+      ],
+      "path": "/api/v1/orderflow/trade_side",
+      "policy_key": "flow_analytics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "portfolio",
+      "kind": "capability",
+      "method": "GET",
+      "name": "portfolio.positions",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/portfolio/positions",
+      "policy_key": "portfolio",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "render",
+      "kind": "capability",
+      "method": "POST",
+      "name": "render.animation",
+      "params": [
+        "ticker",
+        "{'default': 'today', 'desc': 'expiry window to render', 'enum': ['today', 'tomorrow', 'month', 'quarter'], 'name': 'window', 'required': False}",
+        "{'default': 'classic', 'desc': 'which chart to render', 'enum': ['classic', 'gex', 'options'], 'name': 'view', 'required': False}",
+        "{'default': 'gamma', 'desc': 'which greek exposure to render', 'enum': ['gamma', 'delta', 'vanna', 'charm', 'vex', 'dex'], 'name': 'greek', 'required': False}",
+        "{'default': 'web', 'desc': 'chart styling', 'enum': ['web', 'legacy'], 'name': 'style', 'required': False}",
+        "fc?",
+        "date?",
+        "start_t?",
+        "end_t?",
+        "fps?=10",
+        "{'default': 'mp4', 'desc': 'output media format', 'enum': ['mp4', 'gif'], 'name': 'format', 'required': False}",
+        "theme?",
+        "bg?",
+        "overlays?"
+      ],
+      "path": "/api/v1/render/animation",
+      "policy_key": "render_heavy",
+      "tier": "desk",
+      "tier_name": "Desk"
+    },
+    {
+      "anonymous": false,
+      "domain": "render",
+      "kind": "capability",
+      "method": "POST",
+      "name": "render.card",
+      "params": [
+        "cmd",
+        "ticker",
+        "options?"
+      ],
+      "path": "/api/v1/render/card",
+      "policy_key": "render",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "render",
+      "kind": "capability",
+      "method": "POST",
+      "name": "render.chart",
+      "params": [
+        "ticker",
+        "{'default': 'today', 'desc': 'expiry window to render', 'enum': ['today', 'tomorrow', 'month', 'quarter'], 'name': 'window', 'required': False}",
+        "{'default': 'classic', 'desc': 'which chart to render', 'enum': ['classic', 'gex', 'options', 'dex', 'state', 'optionsprofile', 'orderflow', 'strikescope', 'state_page'], 'name': 'view', 'required': False}",
+        "{'default': 'gamma', 'desc': 'which greek exposure to render', 'enum': ['gamma', 'delta', 'vanna', 'charm', 'vex', 'dex', 'optvol'], 'name': 'greek', 'required': False}",
+        "{'default': 'web', 'desc': 'chart styling', 'enum': ['web', 'legacy'], 'name': 'style', 'required': False}",
+        "fc?",
+        "t?",
+        "forecast?=false",
+        "fh?",
+        "{'desc': 'Order-Flow metric (used when view=orderflow)', 'enum': ['agg_dex', 'net_gex', 'net_convexity', 'net_vanna', 'net_charm', 'dex_orderflow', 'gex_orderflow', 'convexity_orderflow'], 'name': 'metric', 'required': False}",
+        "{'default': 'false', 'desc': 'overlay the impulse↔cumulative twin (Order Flow)', 'name': 'combine', 'required': False}",
+        "{'desc': 'min print size in $MM (Order-Flow impulse metrics)', 'name': 'filter', 'required': False}",
+        "{'desc': 'rolling window in minutes (Order Flow)', 'name': 'window_min', 'required': False}",
+        "{'default': 'day', 'desc': 'StrikeScope column density (used when view=strikescope)', 'enum': ['day', 'swing'], 'name': 'scope', 'required': False}",
+        "{'desc': 'visible expiry columns 1..8 (StrikeScope)', 'name': 'cols', 'required': False}",
+        "{'desc': 'State-page mode chip (used when view=state_page)', 'enum': ['classic', 'gex', 'op', 'nogreeks', 'structural', 'optvol'], 'name': 'state_mode', 'required': False}",
+        "theme?",
+        "bg?",
+        "overlays?"
+      ],
+      "path": "/api/v1/render/chart",
+      "policy_key": "render",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "research",
+      "kind": "capability",
+      "method": "GET",
+      "name": "research.coverage",
+      "params": [
+        "ticker=SPX",
+        "at?",
+        "{'default': 'json', 'desc': 'response encoding', 'enum': ['json', 'csv'], 'name': 'format', 'required': False}"
+      ],
+      "path": "/api/v1/research/coverage",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "research",
+      "kind": "capability",
+      "method": "GET",
+      "name": "research.metrics",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/research/metrics",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "research",
+      "kind": "capability",
+      "method": "GET",
+      "name": "research.query",
+      "params": [
+        "ticker=SPX",
+        "metric=gex",
+        "{'desc': 'research view / layout', 'enum': ['ladder', 'smile', 'term', 'levels_term', 'parity', 'surface'], 'name': 'view', 'required': False}",
+        "{'default': 'oi', 'desc': 'per-strike weighting basis', 'enum': ['oi', 'vol', 'both'], 'name': 'weight', 'required': False}",
+        "strikes?=15",
+        "start_dte?=0",
+        "end_dte?=98",
+        "{'default': 'all', 'desc': 'expiry class filter (weekly/monthly/quarterly)', 'enum': ['all', 'w', 'm', 'q'], 'name': 'expiry_class', 'required': False}",
+        "{'default': 'all', 'desc': 'contract side filter', 'enum': ['all', 'calls', 'puts'], 'name': 'contracts', 'required': False}",
+        "{'default': 'all', 'desc': 'moneyness bucket filter', 'enum': ['all', 'atm', 'ntm', 'itm', 'otm'], 'name': 'moneyness', 'required': False}",
+        "net?",
+        "combine_exp?=false",
+        "{'default': 'json', 'desc': 'response encoding', 'enum': ['json', 'csv'], 'name': 'format', 'required': False}"
+      ],
+      "path": "/api/v1/research/query",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "research",
+      "kind": "capability",
+      "method": "GET",
+      "name": "research.universe",
+      "params": [
+        "at?",
+        "{'default': 'json', 'desc': 'response encoding', 'enum': ['json', 'csv'], 'name': 'format', 'required': False}"
+      ],
+      "path": "/api/v1/research/universe",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "scanner",
+      "kind": "capability",
+      "method": "GET",
+      "name": "scanner.screens",
+      "params": [
+        "q",
+        "format?=json"
+      ],
+      "path": "/api/v1/scanner/screens",
+      "policy_key": "market_scanner",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "scanner",
+      "kind": "capability",
+      "method": "GET",
+      "name": "scanner.signals",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/scanner/signals",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "scanner",
+      "kind": "capability",
+      "method": "GET",
+      "name": "scanner.unusual",
+      "params": [
+        "ticker?",
+        "min_premium?=25000",
+        "near_atm_pct?=0.05",
+        "min_day_vol?=250",
+        "limit?=100",
+        "day?",
+        "format?=json"
+      ],
+      "path": "/api/v1/scanner/unusual",
+      "policy_key": "market_scanner",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "screener",
+      "kind": "capability",
+      "method": "GET",
+      "name": "screener.smart_value",
+      "params": [
+        "sector?",
+        "window?=90d",
+        "limit?=25",
+        "min_upside?",
+        "format?=json"
+      ],
+      "path": "/api/v1/screener/smart_value",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "screener",
+      "kind": "capability",
+      "method": "GET",
+      "name": "screener.snapshot",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/screener/snapshot",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "sigmaflow",
+      "kind": "capability",
+      "method": "GET",
+      "name": "sigmaflow.read",
+      "params": [
+        "ticker=SPX",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/sigmaflow/read",
+      "policy_key": "flow_analytics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "smartmoney",
+      "kind": "capability",
+      "method": "GET",
+      "name": "smartmoney.scanner",
+      "params": [
+        "tickers?",
+        "format?=json"
+      ],
+      "path": "/api/v1/smartmoney/scanner",
+      "policy_key": "flow_analytics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "smt",
+      "kind": "capability",
+      "method": "GET",
+      "name": "smt.divergence",
+      "params": [
+        "pair?=ES/NQ",
+        "format?=json"
+      ],
+      "path": "/api/v1/smt/divergence",
+      "policy_key": "smt",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "social",
+      "kind": "capability",
+      "method": "GET",
+      "name": "social.digest",
+      "params": [
+        "ticker",
+        "refresh?=false",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/social/digest",
+      "policy_key": "ai_brief",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "social",
+      "kind": "capability",
+      "method": "GET",
+      "name": "social.feed",
+      "params": [
+        "tag?=all",
+        "limit?=50",
+        "cursor?",
+        "format?=json"
+      ],
+      "path": "/api/v1/social/feed",
+      "policy_key": "social_feed",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "social",
+      "kind": "capability",
+      "method": "GET",
+      "name": "social.influencers",
+      "params": [
+        "hours?=48",
+        "min?=2",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/social/influencers",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "social",
+      "kind": "capability",
+      "method": "GET",
+      "name": "social.sentiment",
+      "params": [
+        "ticker?",
+        "limit?=50",
+        "cursor?",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/social/sentiment",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "social",
+      "kind": "capability",
+      "method": "GET",
+      "name": "social.tallies",
+      "params": [
+        "top?=10",
+        "min_posts?=3",
+        "format?=json",
+        "version?"
+      ],
+      "path": "/api/v1/social/tallies",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "squeeze",
+      "kind": "capability",
+      "method": "GET",
+      "name": "squeeze.board",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/squeeze/board",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "state",
+      "kind": "capability",
+      "method": "GET",
+      "name": "state.flow",
+      "params": [
+        "ticker=SPX",
+        "dte?=today",
+        "t?=1",
+        "format?=json"
+      ],
+      "path": "/api/v1/state/flow",
+      "policy_key": "flow_analytics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "state",
+      "kind": "capability",
+      "method": "GET",
+      "name": "state.ladder",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'gex_profile', 'desc': 'which ladder chart to build', 'enum': ['gex_profile', 'op_nogreeks', 'op_delta', 'op_gamma', 'op_vanna', 'op_charm', 'op_theta', 'structural_lens'], 'name': 'chart', 'required': False}",
+        "{'default': 'latest', 'desc': 'expiry bucket / aggregate', 'enum': ['latest', 'next', 'today_tomorrow', 'd21', 'month', 'to_opex', 'month30', '90d'], 'name': 'bucket', 'required': False}",
+        "day?",
+        "t?",
+        "{'default': 'oi', 'desc': 'size book basis', 'enum': ['oi', 'volume'], 'name': 'book', 'required': False}",
+        "format?=json"
+      ],
+      "path": "/api/v1/state/ladder",
+      "policy_key": "flow_analytics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "state",
+      "kind": "capability",
+      "method": "GET",
+      "name": "state.regime",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'gamma', 'desc': 'structural lens greek', 'enum': ['gamma', 'delta', 'vanna', 'charm'], 'name': 'greek', 'required': False}",
+        "window?=45",
+        "fc?",
+        "format?=json"
+      ],
+      "path": "/api/v1/state/regime",
+      "policy_key": "state",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "statistics",
+      "kind": "capability",
+      "method": "GET",
+      "name": "statistics.auction",
+      "params": [
+        "ticker=SPX",
+        "window?=20",
+        "{'default': 'rth', 'desc': 'session scope', 'enum': ['rth', 'full'], 'name': 'session', 'required': False}",
+        "theta?",
+        "{'default': 'tpo', 'desc': 'profile basis', 'enum': ['tpo', 'volume'], 'name': 'profile', 'required': False}",
+        "bin?",
+        "format?=json"
+      ],
+      "path": "/api/v1/statistics/auction",
+      "policy_key": "auction_statistics",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.charm_close_tightness",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/charm_close_tightness",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.dex_vex_direction",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/dex_vex_direction",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.oi_vs_volume_wall",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/oi_vs_volume_wall",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.open_iv_skew_range",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/open_iv_skew_range",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.vanna_flip_expansion",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/vanna_flip_expansion",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.wall_migration",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/wall_migration",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.greeks.zg_distance_range",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/greeks/zg_distance_range",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "stats",
+      "kind": "capability",
+      "method": "GET",
+      "name": "stats.pin_reconciliation",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/stats/pin_reconciliation",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "status",
+      "kind": "capability",
+      "method": "GET",
+      "name": "status.overview",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/status/overview",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "strategy",
+      "kind": "capability",
+      "method": "GET",
+      "name": "strategy.list",
+      "params": [
+        "format?=json"
+      ],
+      "path": "/api/v1/strategy/list",
+      "policy_key": "strategy_builder",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "strategy",
+      "kind": "capability",
+      "method": "GET",
+      "name": "strategy.shared",
+      "params": [
+        "slug",
+        "format?=json"
+      ],
+      "path": "/api/v1/strategy/shared",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "symbol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "symbol.resolve",
+      "params": [
+        "symbol",
+        "format?=json"
+      ],
+      "path": "/api/v1/symbol/resolve",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "symbol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "symbol.search",
+      "params": [
+        "q",
+        "limit?=12",
+        "format?=json"
+      ],
+      "path": "/api/v1/symbol/search",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "ta",
+      "kind": "capability",
+      "method": "GET",
+      "name": "ta.indicators",
+      "params": [
+        "ticker=SPX",
+        "tf?=1d",
+        "format?=json"
+      ],
+      "path": "/api/v1/ta/indicators",
+      "policy_key": "ta_indicators",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "timegradient",
+      "kind": "capability",
+      "method": "GET",
+      "name": "timegradient.expiry",
+      "params": [
+        "ticker=SPX",
+        "{'default': 'gex', 'desc': 'exposure metric (GEX=gamma / VEX=vanna)', 'enum': ['gex', 'vex'], 'name': 'metric', 'required': False}",
+        "window?=today",
+        "at?=latest",
+        "format?=json",
+        "fc?=false",
+        "version?"
+      ],
+      "path": "/api/v1/timegradient/expiry",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "timegradient",
+      "kind": "capability",
+      "method": "GET",
+      "name": "timegradient.grid",
+      "params": [
+        "ticker=SPX",
+        "metric?=gex",
+        "window?=today",
+        "day?",
+        "from?",
+        "to?",
+        "format?=json",
+        "fc?=false",
+        "version?"
+      ],
+      "path": "/api/v1/timegradient/grid",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "timegradient",
+      "kind": "capability",
+      "method": "GET",
+      "name": "timegradient.panels",
+      "params": [
+        "tickers?=SPX,SPY,QQQ",
+        "window?=today",
+        "at?=latest",
+        "format?=json"
+      ],
+      "path": "/api/v1/timegradient/panels",
+      "policy_key": "trinity",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.company",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/company",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.compare",
+      "params": [
+        "run_a",
+        "run_b",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/compare",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.comps",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/comps",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.estimates",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/estimates",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.financials",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/financials",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.ownership",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/ownership",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.positioning",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/positioning",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.revaluation",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/revaluation",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.runs",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/runs",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "POST",
+      "name": "valuation.screen",
+      "params": [
+        "symbols",
+        "overrides?",
+        "limit?",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/screen",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.sensitivity",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/sensitivity",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.settings",
+      "params": [
+        "scope?=global",
+        "sector?",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/settings",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.short_interest",
+      "params": [
+        "ticker=AAPL",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/short_interest",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "GET",
+      "name": "valuation.universe",
+      "params": [
+        "limit?=100",
+        "offset?=0",
+        "sector?",
+        "model?",
+        "verdict?",
+        "min_market_cap?",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/universe",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "valuation",
+      "kind": "capability",
+      "method": "POST",
+      "name": "valuation.value",
+      "params": [
+        "ticker=AAPL",
+        "overrides?",
+        "format?=json"
+      ],
+      "path": "/api/v1/valuation/value",
+      "policy_key": "valuation",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "vix",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vix.internals",
+      "params": [
+        "range?=6m",
+        "format?=json"
+      ],
+      "path": "/api/v1/vix/internals",
+      "policy_key": "vix_internals",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "vol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vol.garch",
+      "params": [
+        "ticker=SPX",
+        "horizon?=5",
+        "format?=json"
+      ],
+      "path": "/api/v1/vol/garch",
+      "policy_key": "quant_models",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "vol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vol.iv",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/vol/iv",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "vol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vol.regime",
+      "params": [
+        "ticker=SPX",
+        "states?=auto",
+        "format?=json"
+      ],
+      "path": "/api/v1/vol/regime",
+      "policy_key": "quant_models",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "vol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vol.skew",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/vol/skew",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "vol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vol.smile",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/vol/smile",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "vol",
+      "kind": "capability",
+      "method": "GET",
+      "name": "vol.surface",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "expiry?",
+        "format?=json"
+      ],
+      "path": "/api/v1/vol/surface",
+      "policy_key": "surface",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "voloi",
+      "kind": "capability",
+      "method": "POST",
+      "name": "voloi.combined",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/voloi/combined",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": true,
+      "domain": "voloi",
+      "kind": "capability",
+      "method": "GET",
+      "name": "voloi.oi",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/voloi/oi",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "voloi",
+      "kind": "capability",
+      "method": "GET",
+      "name": "voloi.volume",
+      "params": [
+        "ticker=SPX",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/voloi/volume",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "volumeprofile",
+      "kind": "capability",
+      "method": "GET",
+      "name": "volumeprofile.profile",
+      "params": [
+        "ticker=SPY",
+        "session?",
+        "window?=today",
+        "{'default': 'weighted', 'desc': 'buy/sell split classifier (tape_aggressor degrades to weighted when unavailable)', 'enum': ['weighted', 'bar_polarity', 'buying_pressure', 'tick_rule', 'hybrid', 'bvc', 'tape_aggressor'], 'name': 'classifier', 'required': False}",
+        "rows?=100",
+        "value_pct?=0.68",
+        "format?=json"
+      ],
+      "path": "/api/v1/volumeprofile/profile",
+      "policy_key": "volume_profile",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "volumeprofile",
+      "kind": "capability",
+      "method": "GET",
+      "name": "volumeprofile.scan",
+      "params": [
+        "scans?",
+        "tickers?",
+        "min_confluence?=0",
+        "window?=today",
+        "format?=json"
+      ],
+      "path": "/api/v1/volumeprofile/scan",
+      "policy_key": "volume_profile",
+      "tier": "pro",
+      "tier_name": "Pro"
+    }
+  ]
+}

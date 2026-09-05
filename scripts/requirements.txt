@@ -1,0 +1,15 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+#
+# No dependencies.
+#
+# sync_catalog.py and check_drift.py use the Python standard library only
+# (urllib.request, json, argparse, difflib, tempfile). They need Python 3.9 or
+# newer and nothing else, so there is nothing to install:
+#
+#     python scripts/sync_catalog.py
+#     python scripts/check_drift.py --check
+#
+# This file exists to say so, and so that a dependency scanner reading the repo
+# gets an explicit empty answer rather than no answer.
+#
+# The runnable examples under examples/python/ have their own requirements.txt.
