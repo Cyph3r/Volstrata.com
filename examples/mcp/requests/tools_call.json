@@ -1,0 +1,12 @@
+{
+  "_comment": "Copyright 2026 Volstrata.com - https://volstrata.com",
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "gex.levels",
+    "arguments": {
+      "ticker": "SPX"
+    }
+  }
+}

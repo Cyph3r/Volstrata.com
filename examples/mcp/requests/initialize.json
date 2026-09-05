@@ -1,0 +1,14 @@
+{
+  "_comment": "Copyright 2026 Volstrata.com - https://volstrata.com",
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "volstrata-examples",
+      "version": "1.0.0"
+    }
+  }
+}

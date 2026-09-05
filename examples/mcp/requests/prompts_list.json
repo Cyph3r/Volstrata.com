@@ -1,0 +1,7 @@
+{
+  "_comment": "Copyright 2026 Volstrata.com - https://volstrata.com",
+  "jsonrpc": "2.0",
+  "id": 5,
+  "method": "prompts/list",
+  "params": {}
+}
