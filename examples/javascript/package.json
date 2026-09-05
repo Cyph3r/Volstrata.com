@@ -1,0 +1,29 @@
+{
+  "_copyright": "Copyright 2026 Volstrata.com - https://volstrata.com",
+  "name": "volstrata-api-examples",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Runnable Node 18+ examples for the VolStrata REST API and MCP endpoint. Native fetch, no runtime dependencies.",
+  "homepage": "https://volstrata.com/docs/api-examples",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "scripts": {
+    "quickstart": "node quickstart.mjs",
+    "auth": "node auth_and_errors.mjs",
+    "pagination": "node pagination.mjs",
+    "gex": "node rest/gex_levels.mjs",
+    "greeks": "node rest/greeks.mjs",
+    "valuation": "node rest/valuation.mjs",
+    "market": "node rest/market.mjs",
+    "levels": "node rest/levels.mjs",
+    "research": "node rest/research_and_docs.mjs",
+    "calendar": "node rest/calendar_news_social.mjs",
+    "accuracy": "node rest/accuracy_and_stats.mjs",
+    "mcp:tools": "node mcp/list_tools.mjs",
+    "mcp:call": "node mcp/call_a_tool.mjs"
+  }
+}
