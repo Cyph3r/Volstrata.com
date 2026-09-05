@@ -1,0 +1,18 @@
+"VolStrata" and the VolStrata logo are trademarks of the VolStrata project. This
+repository is maintained by the VolStrata team; the MIT licence in LICENSE covers the
+example code and documentation in this repository, not the name or the logo. A fork,
+mirror or derivative work must not use the VolStrata name or logo in a way that implies
+endorsement by, or affiliation with, the VolStrata project. See https://volstrata.com.
+
+The MIT licence does not grant any right to the VolStrata API or to the data the API
+returns. Access to the API, and any use of what it returns, is governed by the Terms of
+Service at https://volstrata.com/legal/terms and the Risk Disclaimer at
+https://volstrata.com/legal/disclaimer. Calling the API constitutes acceptance of those
+terms, which set out the limits on redistributing, storing and re-using market data.
+
+Nothing in this repository, and nothing returned by this API, is investment, financial or
+trading advice. Analytics are model-derived estimates, not statements of fact. Published
+accuracy scores are the project's own automated grading of its own prior output, are not
+independently audited, and are not indicative of future results.
+
+Copyright 2026 Volstrata.com - https://volstrata.com
