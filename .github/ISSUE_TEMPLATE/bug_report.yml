@@ -1,0 +1,135 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+#
+# Bug report form for the VolStrata API examples.
+
+name: Bug report
+description: An example does not run, or does not do what it says it does.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        **Before you fill this in, two things.**
+
+        Never paste an API key, an `Authorization` header value, or a `request_id`
+        into a public issue. A `request_id` is an internal correlation identifier
+        and is no use to anyone here; the HTTP status and the `code` field from the
+        error body are what actually identify the problem.
+
+        If the API returned an error rather than the example misbehaving, the error
+        catalogue is often faster than an issue:
+        <https://volstrata.com/docs/api-errors>.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which example
+      description: Where the problem is.
+      options:
+        - examples/python
+        - examples/javascript
+        - examples/curl
+        - examples/mcp (client configs and JSON-RPC requests)
+        - scripts (the reference generator)
+        - docs (a document, not code)
+        - Something else / not sure
+    validations:
+      required: true
+
+  - type: input
+    id: file
+    attributes:
+      label: File
+      description: The path of the file you ran, as it appears in this repository.
+      placeholder: examples/python/quickstart.py
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language or runtime
+      options:
+        - Python
+        - JavaScript (Node)
+        - curl / POSIX shell
+        - An MCP client reading one of the config files
+        - Not language-specific
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      description: The exact command, with any credential removed.
+      render: shell
+      placeholder: python examples/python/quickstart.py
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: >-
+        Paste the output or the traceback. Redact anything that looks like a
+        credential, and delete any `request_id` before you post.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: http_status
+    attributes:
+      label: HTTP status
+      description: If the API answered with an error. Leave blank if it did not get that far.
+      placeholder: "401"
+
+  - type: input
+    id: error_code
+    attributes:
+      label: The `code` from the error body
+      description: >-
+        Every refusal is an RFC 9457 `application/problem+json` body with a `code`
+        field. Copy that value here - not the whole body.
+      placeholder: auth_required
+
+  - type: input
+    id: versions
+    attributes:
+      label: Operating system and runtime version
+      placeholder: macOS 15, Python 3.11.9
+
+  - type: checkboxes
+    id: unauthenticated
+    attributes:
+      label: Credential state
+      description: Most examples are meant to work with no key at all.
+      options:
+        - label: I ran this with no API key set.
+        - label: I ran this with an API key set.
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Before you submit
+      options:
+        - label: >-
+            This report contains no API key, no `Authorization` header value and no
+            `request_id`.
+          required: true
+        - label: >-
+            I am reporting a problem with this repository's examples, not asking about
+            my account, plan or billing - those belong at https://volstrata.com.
+          required: true

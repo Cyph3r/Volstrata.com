@@ -1,0 +1,103 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+#
+# Request form for a new example, or an existing one in another language.
+
+name: Example request
+description: Ask for an example that does not exist yet, or for one in another language.
+title: "[example] "
+labels: ["example request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository does not carry one file per endpoint. The exhaustive list
+        lives in the generated reference - `docs/reference/REST_ENDPOINTS.md` for
+        REST and `docs/reference/MCP_TOOLS.md` for MCP tools - and the examples are
+        a smaller, curated set that each teach a pattern.
+
+        So the useful ask is usually one of two things: a capability whose shape is
+        awkward enough to deserve its own worked example, or an existing example
+        rewritten in a language this repository does not cover yet.
+
+        Pull requests are welcome for either. `CONTRIBUTING.md` has the ground rules.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of example
+      options:
+        - A capability that has no worked example yet
+        - An existing example, in a language this repository does not cover
+        - An MCP client that needs its own configuration example
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: capability
+    attributes:
+      label: Capability name
+      description: >-
+        The dotted name exactly as it appears in `docs/reference/REST_ENDPOINTS.md`
+        (or, for a tool, in `docs/reference/MCP_TOOLS.md`). Write `n/a` if this
+        request is not about one capability.
+      placeholder: gex.levels
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: REST or MCP
+      options:
+        - REST
+        - MCP
+        - Both
+    validations:
+      required: true
+
+  - type: dropdown
+    id: languages
+    attributes:
+      label: Language
+      description: Pick as many as apply.
+      multiple: true
+      options:
+        - Python
+        - JavaScript (Node)
+        - curl / POSIX shell
+        - A language this repository does not cover yet
+    validations:
+      required: true
+
+  - type: input
+    id: other_language
+    attributes:
+      label: Which other language
+      description: Only if you picked the last option above.
+      placeholder: Go
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What should the example show
+      description: >-
+        The task you are actually trying to do, not just the endpoint name. Knowing
+        that you want the day's levels for a watchlist, or a paged pull you can
+        rerun, shapes the example far more than the URL does.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: >-
+            I checked `docs/reference/REST_ENDPOINTS.md` and this capability is
+            published. (Skip if the request is not about a capability.)
+        - label: I would be willing to open the pull request myself.
+        - label: >-
+            This request contains no API key, no `Authorization` header value and no
+            `request_id`.
+          required: true

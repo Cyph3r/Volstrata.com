@@ -16,3 +16,9 @@ node_modules/
 
 # OS
 .DS_Store
+
+# MCP client configs — only the templates in examples/mcp/ are committed.
+# A config you fill in carries a live key, so the filled-in names are ignored
+# at every level. `mcp.json.example` is a different filename and stays tracked.
+mcp.json
+.mcp.json

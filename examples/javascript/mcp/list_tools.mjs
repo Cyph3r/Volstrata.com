@@ -19,7 +19,16 @@
  * of a 200 response. That single fact is the main thing this file teaches.
  */
 
-import { BASE, hasApiKey, headers, heading, show, summarize } from "../lib/volstrata.mjs";
+import {
+  BASE,
+  VolstrataApiError,
+  hasApiKey,
+  headers,
+  heading,
+  show,
+  summarize,
+  withBackoff,
+} from "../lib/volstrata.mjs";
 
 /** The transport is one URL. JSON-RPC over POST; there is no GET form. */
 const MCP_URL = `${BASE}/api/v1/mcp`;
@@ -74,28 +83,35 @@ async function rpc(method, params, { notify = false } = {}) {
   if (params !== undefined) message.params = params;
   if (!notify) message.id = nextId++;
 
-  const res = await fetch(url, {
-    method: "POST",
-    // Same credential as the REST API: `Authorization: Bearer <key>`, attached
-    // only when VOLSTRATA_API_KEY is set. Anonymous callers get the free tools.
-    headers: headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify(message),
-    signal: AbortSignal.timeout(30_000),
+  // The transport is retried; the MCP layer's own answer is not. A 429 or a 5xx
+  // means the message never reached MCP, so sending it again is safe — and at
+  // the anonymous ceiling of 10 requests a minute, a handshake plus tools/list
+  // meets that ceiling easily. An `error` inside a 200 is the server's
+  // considered reply and is surfaced immediately instead.
+  return withBackoff(async () => {
+    const res = await fetch(url, {
+      method: "POST",
+      // Same credential as the REST API: `Authorization: Bearer <key>`, attached
+      // only when VOLSTRATA_API_KEY is set. Anonymous callers get the free tools.
+      headers: headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify(message),
+      signal: AbortSignal.timeout(30_000),
+    });
+
+    // A non-2xx here means the request never reached the MCP layer at all — a
+    // wrong URL, a proxy, an edge refusal, or the rate limiter. Everything the
+    // MCP layer itself decides comes back as 200 with an `error` member.
+    // Raising it as a VolstrataApiError is what lets withBackoff above see a
+    // 429 as retryable and honour `Retry-After`; it also parses the RFC 9457
+    // problem document, so the message below is the API's own words.
+    if (!res.ok) throw await VolstrataApiError.fromResponse(res, url);
+
+    if (notify) return null;
+
+    const envelope = await res.json();
+    if (envelope.error) throw new McpRpcError(envelope.error);
+    return envelope.result ?? {};
   });
-
-  // A non-2xx here means the request never reached the MCP layer at all — a
-  // wrong URL, a proxy, an edge refusal. Everything the MCP layer itself
-  // decides comes back as 200 with an `error` member.
-  if (!res.ok) {
-    const body = (await res.text().catch(() => "")).slice(0, 200);
-    throw new Error(`HTTP ${res.status} from ${url} — the request did not reach the MCP layer. ${body}`);
-  }
-
-  if (notify) return null;
-
-  const envelope = await res.json();
-  if (envelope.error) throw new McpRpcError(envelope.error);
-  return envelope.result ?? {};
 }
 
 heading("MCP — tools/list");
@@ -199,6 +215,8 @@ try {
   if (error instanceof McpRpcError) {
     console.log(`  ${error.message}`);
     if (error.isAccessDenied) show("required plan", error.data.required_plan_name ?? "(not reported)");
+  } else if (error instanceof VolstrataApiError) {
+    console.log(error.describe());
   } else {
     console.log(`  ${error?.message ?? error}`);
   }

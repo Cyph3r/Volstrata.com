@@ -1,0 +1,206 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+#
+# Verification for the VolStrata API examples.
+#
+# Everything here runs with NO credential. The examples are checked against the
+# real public API at https://volstrata.com using only the capabilities that
+# answer anonymously, so a fork gets the same green build as this repository
+# with nothing configured. There is no secret to add, and none of these jobs
+# would use one if it were there.
+#
+# Live-traffic budget: an anonymous caller gets 10 requests per minute, so the
+# smoke tests are deliberately tiny - a couple of requests each, no loops, and
+# no matrix fanning them out across runtime versions. Each job runs on its own
+# runner, so the requests do not stack up behind one address.
+#
+# Docs: https://volstrata.com/docs/api-overview
+
+name: verify
+
+on:
+  # `main` is this repository's default branch.
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Read-only. Nothing in this workflow writes to the repository.
+permissions:
+  contents: read
+
+# One run per ref. Pushing again cancels the run that is already in flight
+# rather than doubling the live traffic.
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --------------------------------------------------------------------------
+  # 1. The generated reference still matches the live public API.
+  # --------------------------------------------------------------------------
+  drift:
+    name: Reference is current
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install script dependencies, if the scripts declare any
+        run: |
+          set -eu
+          if [ -f scripts/requirements.txt ]; then
+            python -m pip install --disable-pip-version-check --requirement scripts/requirements.txt
+          else
+            echo "scripts/ is standard library only - nothing to install"
+          fi
+
+      # Regenerates docs/reference/ into a scratch directory from
+      # https://volstrata.com/api/openapi.json and the public capability
+      # catalog, and fails if the committed copy differs. Nothing under
+      # docs/reference/ is hand-written.
+      - name: Check docs/reference against the live public API
+        run: python scripts/check_drift.py --check
+
+  # --------------------------------------------------------------------------
+  # 2. Python examples parse, and the quickstart really returns data.
+  # --------------------------------------------------------------------------
+  python:
+    name: Python examples
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install the one dependency
+        run: python -m pip install --disable-pip-version-check --requirement examples/python/requirements.txt
+
+      - name: Byte-compile every Python file
+        run: python -m compileall -q examples/python scripts
+
+      # One unauthenticated call to a Free capability. If this fails, either the
+      # example is broken or the public API is not answering - both are worth a
+      # red build.
+      - name: Smoke test - quickstart, no API key
+        run: python examples/python/quickstart.py
+
+  # --------------------------------------------------------------------------
+  # 3. JavaScript examples parse, and the quickstart really returns data.
+  # --------------------------------------------------------------------------
+  node:
+    name: JavaScript examples
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # `node --check` parses without executing. .mjs is always an ES module,
+      # so top-level `import` is accepted.
+      - name: Syntax-check every ES module
+        run: |
+          set -eu
+          count=0
+          for f in $(find . -path ./node_modules -prune -o -name '*.mjs' -print | sort); do
+            printf '  %s\n' "$f"
+            node --check "$f"
+            count=$((count + 1))
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "no .mjs files found - the checkout is not what this job expects" >&2
+            exit 1
+          fi
+          printf '%d ES module(s) parsed cleanly\n' "$count"
+
+      - name: Smoke test - quickstart, no API key
+        run: node examples/javascript/quickstart.mjs
+
+  # --------------------------------------------------------------------------
+  # 4. Shell examples parse. They are not executed - the Python and JavaScript
+  #    smoke tests already prove the API is answering, and running these too
+  #    would spend the anonymous request budget for no extra signal.
+  # --------------------------------------------------------------------------
+  shell:
+    name: Shell examples
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax-check every shell script
+        run: |
+          set -eu
+          count=0
+          for f in $(find . -name '*.sh' -print | sort); do
+            printf '  %s\n' "$f"
+            sh -n "$f"
+            count=$((count + 1))
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "no .sh files found - the checkout is not what this job expects" >&2
+            exit 1
+          fi
+          printf '%d shell script(s) parsed cleanly\n' "$count"
+
+      # Advisory only. shellcheck is pre-installed on the runner image. Style
+      # findings are worth reading but must not block a correct example.
+      - name: shellcheck (advisory)
+        continue-on-error: true
+        run: |
+          set -eu
+          shellcheck --version
+          find . -name '*.sh' -print0 | xargs -0 -r shellcheck --shell=sh
+
+  # --------------------------------------------------------------------------
+  # 5. No credential has ever been committed. Blocking.
+  # --------------------------------------------------------------------------
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # Bump by hand when a new gitleaks release is worth taking; Dependabot
+      # only tracks Actions, not this download.
+      GITLEAKS_VERSION: 8.30.1
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installed from the official release rather than via a marketplace
+      # action: this keeps the job free of any token, works the same on a fork,
+      # and scans the working tree (which is what .gitleaks.toml is written
+      # for) instead of a commit range.
+      - name: Install gitleaks
+        run: |
+          set -eu
+          cd "$RUNNER_TEMP"
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
+          curl --fail --silent --show-error --location --retry 3 \
+            --output "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            "${base}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl --fail --silent --show-error --location --retry 3 \
+            --output checksums.txt \
+            "${base}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          sha256sum --ignore-missing --check checksums.txt
+          tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" gitleaks
+          chmod +x gitleaks
+          ./gitleaks version
+
+      - name: Scan the working tree
+        run: |
+          set -eu
+          "$RUNNER_TEMP/gitleaks" dir . \
+            --config .gitleaks.toml \
+            --redact \
+            --no-banner \
+            --verbose \
+            --exit-code 1

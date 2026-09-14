@@ -23,7 +23,16 @@
  * The HTTP status is 200 in both cases.
  */
 
-import { BASE, hasApiKey, headers, heading, show, summarize } from "../lib/volstrata.mjs";
+import {
+  BASE,
+  VolstrataApiError,
+  hasApiKey,
+  headers,
+  heading,
+  show,
+  summarize,
+  withBackoff,
+} from "../lib/volstrata.mjs";
 
 const MCP_URL = `${BASE}/api/v1/mcp`;
 const ticker = (process.argv[2] ?? "SPX").toUpperCase();
@@ -64,25 +73,30 @@ async function rpc(method, params, { notify = false } = {}) {
   if (params !== undefined) message.params = params;
   if (!notify) message.id = nextId++;
 
-  const res = await fetch(MCP_URL, {
-    method: "POST",
-    headers: headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify(message),
-    signal: AbortSignal.timeout(30_000),
+  // The transport is retried; the MCP layer's own answer is not. A 429 or a 5xx
+  // means the message never reached MCP, so sending it again is safe — and at
+  // the anonymous ceiling of 10 requests a minute, a handshake plus a tools/call
+  // meets that ceiling easily. An `error` inside a 200 is the server's
+  // considered reply and is surfaced immediately instead.
+  return withBackoff(async () => {
+    const res = await fetch(MCP_URL, {
+      method: "POST",
+      headers: headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify(message),
+      signal: AbortSignal.timeout(30_000),
+    });
+
+    // Only a transport failure lands here; everything the MCP layer decides is a
+    // 200 with `result` or `error`. Raising it as a VolstrataApiError is what
+    // lets withBackoff above see a 429 as retryable and honour `Retry-After`.
+    if (!res.ok) throw await VolstrataApiError.fromResponse(res, MCP_URL);
+
+    if (notify) return null;
+
+    const envelope = await res.json();
+    if (envelope.error) throw new McpRpcError(envelope.error);
+    return envelope.result ?? {};
   });
-
-  // Only a transport failure lands here; everything the MCP layer decides is a
-  // 200 with `result` or `error`.
-  if (!res.ok) {
-    const body = (await res.text().catch(() => "")).slice(0, 200);
-    throw new Error(`HTTP ${res.status} from ${MCP_URL} — the request did not reach the MCP layer. ${body}`);
-  }
-
-  if (notify) return null;
-
-  const envelope = await res.json();
-  if (envelope.error) throw new McpRpcError(envelope.error);
-  return envelope.result ?? {};
 }
 
 heading("MCP — tools/call");
@@ -200,6 +214,8 @@ try {
   if (error instanceof McpRpcError) {
     console.log(`  ${error.message}`);
     show("data", summarize(error.data, { depth: 1, maxKeys: 6 }));
+  } else if (error instanceof VolstrataApiError) {
+    console.log(error.describe());
   } else {
     console.log(`  ${error?.message ?? error}`);
   }

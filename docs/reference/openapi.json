@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "VolStrata Public API",
-    "version": "2026-09-01",
+    "version": "2026-09-09",
     "summary": "Options-gamma, greeks, flow, valuation and market-context capabilities, projected from the capability catalogue.",
     "description": "Generated from the published capability catalogue.\n\nEvery path is the canonical `/api/v1` spelling — the ONE surface (the /api/v2 alias is retired).\n\nEach operation carries its plan/entitlement floor (`x-plan-tier` slug, `x-plan-tier-name` customer-facing name, `x-policy-key`). Widget-feeding JSON reads fold in the shared `freshness` contract (`components.schemas.Freshness`) and the `delivery` contract (`components.schemas.Delivery`), which states whether a body is the live or a delayed lane and what would clear the delay. A small set of published literal-path reads (the daily-proof scorecard, the forecast backtest, the exposure projection and the Master Read) are projected alongside the catalogue.\n\nTELLING OUR REFUSALS FROM THE EDGE'S (write your client against this): every refusal issued by this API is RFC 9457 JSON (`application/problem+json`) carrying a `type` URL, a stable `code`, a `request_id`, and `ok: false`. If a refusal body is NOT JSON, it never reached us — it came from the CDN edge, which answers in `text/plain` (measured example: the Python stdlib's default `Python-urllib/*` User-Agent is refused 403 at the edge with a plain-text `error code: 1010` before we ever see the request; set any User-Agent, or use `requests`/`curl`). And check the HTTP status before the body shape: a rate-limit refusal is `429` with `code: \"rate_limited\"` and `ok: false` — a collector that only reads `body[\"series\"]` off a 429 records a normal empty day, which is a silent wrong answer, not a missing one.",
     "termsOfService": "https://volstrata.com/legal/terms",
@@ -16,8 +16,8 @@
       "email": "support@volstrata.com"
     },
     "x-copyright": "Copyright 2026 Volstrata.com - https://volstrata.com",
-    "x-api-version": "2026-09-01",
-    "x-catalog-fingerprint": "sha256:07d2dfe48736de886fc12ba7e9405ad4bd1ae512397f32ecbb9f9a99737e0957",
+    "x-api-version": "2026-09-09",
+    "x-catalog-fingerprint": "sha256:effea7406006c1cf2af82b839dfafb1934a227cc0e4ddad4b88d5134b04d95c2",
     "x-base": "/api/v1"
   },
   "servers": [
@@ -288,6 +288,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/gex/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -345,6 +346,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/levels/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -402,6 +404,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/metrics/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -459,6 +462,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/gamma_flip/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -516,6 +520,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/maxpain/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -568,7 +573,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -610,6 +615,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -733,7 +739,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -775,6 +781,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -841,6 +848,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/gamma/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -893,7 +901,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -935,6 +943,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -1010,6 +1019,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/iv/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -1071,7 +1081,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1113,6 +1123,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -1182,7 +1193,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1224,6 +1235,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -1259,7 +1271,7 @@
       "get": {
         "operationId": "market.status",
         "summary": "market.status (Free)",
-        "description": "`market.status` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/market_status.json.",
+        "description": "`market.status` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/market_status.json.",
         "tags": [
           "market"
         ],
@@ -1283,13 +1295,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/market_status.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "tickers",
@@ -1351,7 +1381,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1393,6 +1423,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -1489,7 +1520,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1531,6 +1562,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -1642,7 +1674,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1684,6 +1716,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -1790,6 +1823,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/day_levels/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -1847,6 +1881,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/week_levels/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -1904,6 +1939,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/day/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -1961,6 +1997,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/week/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -2013,7 +2050,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2055,6 +2092,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2116,7 +2154,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2158,6 +2196,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2219,7 +2258,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2261,6 +2300,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2322,7 +2362,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2364,6 +2404,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2434,7 +2475,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2476,6 +2517,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2546,7 +2588,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2588,6 +2630,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2658,7 +2701,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2700,6 +2743,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2770,7 +2814,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2812,6 +2856,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2882,7 +2927,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2924,6 +2969,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -2985,7 +3031,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3027,6 +3073,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -3088,7 +3135,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3130,6 +3177,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -3191,7 +3239,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3233,6 +3281,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -3294,7 +3343,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3336,6 +3385,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "range",
@@ -3388,7 +3438,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3430,6 +3480,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -3496,6 +3547,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/oi/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -3562,6 +3614,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/volume/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -3623,7 +3676,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3665,6 +3718,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "requestBody": {
           "required": false,
           "content": {
@@ -3723,7 +3777,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3765,6 +3819,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -3868,7 +3923,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3910,6 +3965,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -3995,7 +4051,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4037,6 +4093,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -4107,7 +4164,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4149,6 +4206,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -4227,7 +4285,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4269,6 +4327,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -4330,7 +4389,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4372,6 +4431,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "pair",
@@ -4424,7 +4484,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4466,6 +4526,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -4526,7 +4587,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4568,6 +4629,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -4629,7 +4691,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4671,6 +4733,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -4714,7 +4777,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4756,6 +4819,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -4833,7 +4897,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4875,6 +4939,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -4918,7 +4983,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4960,6 +5025,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "slug",
@@ -5011,7 +5077,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5053,6 +5119,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -5129,7 +5196,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5171,6 +5238,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "days",
@@ -5197,7 +5265,7 @@
       "get": {
         "operationId": "market.overview",
         "summary": "market.overview (Free)",
-        "description": "`market.overview` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/market_overview.json.",
+        "description": "`market.overview` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/market_overview.json.",
         "tags": [
           "market"
         ],
@@ -5221,13 +5289,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/market_overview.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -5271,7 +5357,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5313,6 +5399,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -5330,7 +5417,7 @@
       "get": {
         "operationId": "market.rotations",
         "summary": "market.rotations (Free)",
-        "description": "`market.rotations` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/rotations.json.",
+        "description": "`market.rotations` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/rotations.json.",
         "tags": [
           "market"
         ],
@@ -5354,13 +5441,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/rotations.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "tf",
@@ -5387,7 +5492,7 @@
       "get": {
         "operationId": "calendar.combined",
         "summary": "calendar.combined (Free)",
-        "description": "`calendar.combined` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/calendar.json.",
+        "description": "`calendar.combined` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/calendar.json.",
         "tags": [
           "calendar"
         ],
@@ -5411,13 +5516,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/calendar.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "range",
@@ -5486,7 +5609,7 @@
       "get": {
         "operationId": "calendar.events",
         "summary": "calendar.events (Free)",
-        "description": "`calendar.events` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/calendar_events.json.",
+        "description": "`calendar.events` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/calendar_events.json.",
         "tags": [
           "calendar"
         ],
@@ -5510,13 +5633,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/calendar_events.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "range",
@@ -5595,7 +5736,7 @@
       "get": {
         "operationId": "calendar.corporate",
         "summary": "calendar.corporate (Free)",
-        "description": "`calendar.corporate` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/calendar/corporate_actions.json.",
+        "description": "`calendar.corporate` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/calendar/corporate_actions.json.",
         "tags": [
           "calendar"
         ],
@@ -5619,13 +5760,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/calendar/corporate_actions.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "range",
@@ -5703,7 +5862,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5745,6 +5904,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "range",
@@ -5846,7 +6006,7 @@
       "get": {
         "operationId": "insider.filings",
         "summary": "insider.filings (Free)",
-        "description": "`insider.filings` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/insider.json.",
+        "description": "`insider.filings` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/insider.json.",
         "tags": [
           "insider"
         ],
@@ -5870,13 +6030,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/insider.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -5954,7 +6132,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5996,6 +6174,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -6098,7 +6277,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6140,6 +6319,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "window",
@@ -6216,7 +6396,7 @@
       "get": {
         "operationId": "news.feed",
         "summary": "news.feed (Free)",
-        "description": "`news.feed` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/news.json.",
+        "description": "`news.feed` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/news.json.",
         "tags": [
           "news"
         ],
@@ -6240,13 +6420,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/news.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -6297,7 +6495,7 @@
       "get": {
         "operationId": "social.sentiment",
         "summary": "social.sentiment (Free)",
-        "description": "`social.sentiment` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/social.json.",
+        "description": "`social.sentiment` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/social.json.",
         "tags": [
           "social"
         ],
@@ -6321,13 +6519,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/social.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -6404,7 +6620,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6446,6 +6662,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "tag",
@@ -6515,7 +6732,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6557,6 +6774,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -6623,6 +6841,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/docs",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -6671,6 +6890,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/docs/<metric>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "metric",
@@ -6723,7 +6943,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6765,6 +6985,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "requestBody": {
           "required": true,
           "content": {
@@ -6825,7 +7046,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6867,6 +7088,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "requestBody": {
           "required": true,
           "content": {
@@ -7050,7 +7272,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7092,6 +7314,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "requestBody": {
           "required": true,
           "content": {
@@ -7221,7 +7444,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7263,6 +7486,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -7348,7 +7572,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7390,6 +7614,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -7497,7 +7722,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7539,6 +7764,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -7565,6 +7791,20 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "frames",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "objects",
+                "compact"
+              ],
+              "default": "objects"
+            },
+            "description": "frame array encoding"
           },
           {
             "name": "format",
@@ -7608,7 +7848,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7650,6 +7890,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -7754,7 +7995,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7796,6 +8037,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "tickers",
@@ -7871,6 +8113,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/markets/snapshot",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "tickers",
@@ -7928,6 +8171,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/markets/candles",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -8022,7 +8266,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8064,6 +8308,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -8158,7 +8403,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8200,6 +8445,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -8278,7 +8524,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8320,6 +8566,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -8390,7 +8637,7 @@
       "get": {
         "operationId": "ai.eta",
         "summary": "ai.eta (Free)",
-        "description": "`ai.eta` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/ai/eta.json.",
+        "description": "`ai.eta` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/ai/eta.json.",
         "tags": [
           "ai"
         ],
@@ -8414,13 +8661,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/ai/eta.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "unknown",
         "parameters": [
           {
             "name": "chart_type",
@@ -8490,7 +8755,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8532,6 +8797,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -8575,7 +8841,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8617,6 +8883,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -8687,7 +8954,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8729,6 +8996,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -8790,7 +9058,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8832,6 +9100,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -8893,7 +9162,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8935,6 +9204,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -9005,7 +9275,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9047,6 +9317,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -9099,7 +9370,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9141,6 +9412,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -9211,7 +9483,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9253,6 +9525,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "symbol",
@@ -9324,6 +9597,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/query/<ticker>/<metric>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -9519,6 +9793,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/metrics",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -9572,6 +9847,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/coverage.json",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -9647,6 +9923,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/research/universe.json",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "at",
@@ -9703,7 +9980,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9745,6 +10022,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -9797,7 +10075,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9839,6 +10117,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -9891,7 +10170,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9933,6 +10212,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -9985,7 +10265,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10027,6 +10307,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10079,7 +10360,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10121,6 +10402,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10147,7 +10429,7 @@
       "get": {
         "operationId": "valuation.universe",
         "summary": "valuation.universe (Free)",
-        "description": "`valuation.universe` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/valuation/universe.",
+        "description": "`valuation.universe` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/valuation/universe.",
         "tags": [
           "valuation"
         ],
@@ -10171,13 +10453,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/valuation/universe",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "limit",
@@ -10245,7 +10545,7 @@
       "get": {
         "operationId": "valuation.company",
         "summary": "valuation.company (Free)",
-        "description": "`valuation.company` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/valuation/company/<ticker>.",
+        "description": "`valuation.company` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/valuation/company/<ticker>.",
         "tags": [
           "valuation"
         ],
@@ -10269,13 +10569,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/valuation/company/<ticker>",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10328,7 +10646,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10370,6 +10688,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10422,7 +10741,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10464,6 +10783,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10516,7 +10836,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10558,6 +10878,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10610,7 +10931,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10652,6 +10973,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10704,7 +11026,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10746,6 +11068,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10798,7 +11121,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10840,6 +11163,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10892,7 +11216,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10934,6 +11258,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -10986,7 +11311,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11028,6 +11353,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "requestBody": {
           "required": false,
           "content": {
@@ -11085,7 +11411,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11127,6 +11453,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "requestBody": {
           "required": true,
           "content": {
@@ -11189,7 +11516,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11231,6 +11558,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -11283,7 +11611,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11325,6 +11653,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "run_a",
@@ -11384,7 +11713,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11426,6 +11755,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "scope",
@@ -11491,6 +11821,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/fundamentals/<ticker>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -11548,6 +11879,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/dealer-gamma/history",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -11614,6 +11946,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/dealer-gamma/tickers",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -11662,6 +11995,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/gamma-pin",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -11727,6 +12061,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/forecast/scoreboard",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -11783,6 +12118,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/status",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -11831,6 +12167,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/symbols/search",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "q",
@@ -11896,6 +12233,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/symbols/resolve",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "symbol",
@@ -11952,6 +12290,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/etf/<ticker>/constituents.json",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -12009,6 +12348,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/level-detail",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -12091,6 +12431,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/tape-accuracy.json",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -12134,7 +12475,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12176,6 +12517,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -12251,7 +12593,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12293,6 +12635,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -12378,7 +12721,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12420,6 +12763,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -12490,7 +12834,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12532,6 +12876,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -12654,7 +12999,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12696,6 +13041,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -12787,7 +13133,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12829,6 +13175,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -12889,7 +13236,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12931,6 +13278,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -12974,7 +13322,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13016,6 +13364,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "tickers",
@@ -13041,7 +13390,7 @@
       "get": {
         "operationId": "social.tallies",
         "summary": "social.tallies (Free)",
-        "description": "`social.tallies` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/social/tallies.json.",
+        "description": "`social.tallies` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/social/tallies.json.",
         "tags": [
           "social"
         ],
@@ -13065,13 +13414,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/social/tallies.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "top",
@@ -13115,7 +13482,7 @@
       "get": {
         "operationId": "social.influencers",
         "summary": "social.influencers (Free)",
-        "description": "`social.influencers` capability. Public (Free tier). Advertised canonical route. Alias of GET /api/v1/social/influencers.json.",
+        "description": "`social.influencers` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route. Alias of GET /api/v1/social/influencers.json.",
         "tags": [
           "social"
         ],
@@ -13139,13 +13506,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/social/influencers.json",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "hours",
@@ -13215,7 +13600,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13257,6 +13642,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -13325,7 +13711,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13367,6 +13753,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "regime",
@@ -13418,7 +13805,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13460,6 +13847,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -13526,6 +13914,7 @@
         "x-policy-key": "public",
         "x-aliases": "",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -13578,7 +13967,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13620,6 +14009,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -13681,7 +14071,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13723,6 +14113,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -13784,7 +14175,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13826,6 +14217,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -13878,7 +14270,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13920,6 +14312,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -13977,6 +14370,7 @@
         "x-policy-key": "public",
         "x-aliases": "",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -14020,7 +14414,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14062,6 +14456,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "sector",
@@ -14154,6 +14549,7 @@
         "x-policy-key": "public",
         "x-aliases": "",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -14213,7 +14609,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14255,6 +14651,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -14330,7 +14727,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14372,6 +14769,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -14452,7 +14850,7 @@
       "get": {
         "operationId": "volumeprofile.scan",
         "summary": "volumeprofile.scan (Pro)",
-        "description": "`volumeprofile.scan` capability. Volume-profile screens over the poll registry (POC magnets, value-area breaks, HVN/LVN structure), each row carrying its own freshness. Runs on last-good cached 1-minute candles. Serves `armed:false` with an empty `scans` mapping when the scan sweep is not currently published.",
+        "description": "`volumeprofile.scan` capability. Volume-profile screens over the poll registry (POC magnets, value-area breaks, HVN/LVN structure), each row carrying its own freshness. Runs on last-good cached 1-minute candles. Serves `armed:false` with an empty `scans` mapping when the scan pass is not currently published.",
         "tags": [
           "volumeprofile"
         ],
@@ -14478,7 +14876,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14520,6 +14918,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "scans",
@@ -14597,7 +14996,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14639,6 +15038,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -14744,7 +15144,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14786,6 +15186,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -14881,7 +15282,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14914,6 +15315,7 @@
         "x-plan-tier": "pro",
         "x-plan-tier-name": "Pro",
         "x-policy-key": "market_scanner",
+        "x-aliases": "",
         "security": [
           {
             "ApiKeyBearer": []
@@ -14922,6 +15324,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "q",
@@ -14976,7 +15379,9 @@
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
+        "x-aliases": "",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -15020,7 +15425,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15062,6 +15467,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "scope",
@@ -15143,7 +15549,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15185,6 +15591,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -15253,7 +15660,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15295,6 +15702,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -15338,7 +15746,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15380,6 +15788,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -15441,7 +15850,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15483,6 +15892,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -15548,6 +15958,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/call-the-pin",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -15605,6 +16016,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/call-the-pin/leaderboard",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -15657,7 +16069,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15699,6 +16111,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -15747,6 +16160,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/strategies/shared/<slug>",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "slug",
@@ -15798,7 +16212,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15840,6 +16254,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -15883,7 +16298,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -15925,6 +16340,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -15968,7 +16384,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -16010,6 +16426,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "format",
@@ -16051,13 +16468,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/me/signal_stats",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "unknown",
         "parameters": [
           {
             "name": "ticker",
@@ -16115,6 +16550,7 @@
         "x-policy-key": "public",
         "x-aliases": "",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "domain",
@@ -16189,6 +16625,7 @@
         "x-policy-key": "public",
         "x-aliases": "",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "tier",
@@ -16214,7 +16651,7 @@
       "post": {
         "operationId": "meta.mcp",
         "summary": "meta.mcp (Free)",
-        "description": "`meta.mcp` capability. Public (Free tier). Advertised canonical route.",
+        "description": "`meta.mcp` capability. Free tier (no paid plan needed), but a credential is required. Advertised canonical route.",
         "tags": [
           "meta"
         ],
@@ -16238,13 +16675,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required (anonymous caller on a credentialed route).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         },
         "x-plan-tier": "free",
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "",
-        "security": [],
+        "security": [
+          {
+            "ApiKeyBearer": []
+          },
+          {
+            "ApiKeyQuery": []
+          }
+        ],
+        "x-anonymous-access": "unknown",
         "requestBody": {
           "required": true,
           "content": {
@@ -16312,6 +16767,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/wall_migration",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16360,6 +16816,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/charm_close_tightness",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16408,6 +16865,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/open_iv_skew_range",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16456,6 +16914,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/zg_distance_range",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16504,6 +16963,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/oi_vs_volume_wall",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16552,6 +17012,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/vanna_flip_expansion",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16600,6 +17061,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/greeks/dex_vex_direction",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16648,6 +17110,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/stats/pin_reconciliation",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "format",
@@ -16696,6 +17159,7 @@
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/did-it-hold",
         "security": [],
+        "x-anonymous-access": "yes",
         "parameters": [
           {
             "name": "ticker",
@@ -16754,7 +17218,8 @@
         "x-plan-tier-name": "Free",
         "x-policy-key": "public",
         "x-aliases": "GET /api/v1/forecast/backtest",
-        "security": []
+        "security": [],
+        "x-anonymous-access": "yes"
       }
     },
     "/api/v1/exposure/projection": {
@@ -16787,7 +17252,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -16829,6 +17294,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -16960,7 +17426,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -17002,6 +17468,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
@@ -17095,7 +17562,7 @@
             }
           },
           "401": {
-            "description": "Authentication required (anon on a gated capability).",
+            "description": "Authentication required (anonymous caller on a credentialed route).",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -17137,6 +17604,7 @@
             "ApiKeyQuery": []
           }
         ],
+        "x-anonymous-access": "no",
         "parameters": [
           {
             "name": "ticker",
