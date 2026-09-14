@@ -97,10 +97,14 @@ else's name on work you authored.
 - Credentials appear only as environment-variable names read at runtime.
 - Placeholders are obviously fake: `YOUR_API_KEY` or `gex_key_v1_XXXXXXXX`. Never a
   string that could be mistaken for a real key.
-- `.env` is git-ignored, and so is any MCP client config you create from a template —
-  `mcp.json`, `.mcp.json`, and everything in `examples/mcp/` that is not a `.example` file
-  or a request body. Only the `.example` templates are committed, and they hold no values.
-  Confirm with `git check-ignore -v mcp.json examples/mcp/mcp.json` before you commit.
+- `.env` is git-ignored, and so is any MCP client config you fill in: `mcp.json` and
+  `.mcp.json` are ignored at every level in the tree. Confirm with
+  `git check-ignore -v mcp.json examples/mcp/mcp.json` before you commit.
+- Three MCP templates *are* committed — `examples/mcp/mcp.json.example`,
+  `examples/mcp/claude_desktop_config.json` and `examples/mcp/vscode_mcp.json`. Every one
+  of them carries `YOUR_API_KEY` and never a value. The latter two are tracked under their
+  real filenames, so a key pasted into one in place would be staged like any other edit:
+  copy a template to `mcp.json` — which is ignored — and put your key in the copy.
 - Sample responses in documentation are hand-written with synthetic values. Do not paste
   a captured live response body: those carry request ids, cookies and edge headers.
 

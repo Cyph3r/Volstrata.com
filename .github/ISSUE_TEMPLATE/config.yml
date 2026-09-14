@@ -1,0 +1,15 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+#
+# Issue chooser configuration. Blank issues are off: the two forms above collect
+# what is actually needed to reproduce something, and everything else - accounts,
+# plans, keys, billing, how a number is produced - is answered on the site, not here.
+
+blank_issues_enabled: false
+
+contact_links:
+  - name: API documentation
+    url: https://volstrata.com/docs/api-overview
+    about: Base URL, authentication, rate limits, the error envelope and the endpoint catalogue.
+  - name: VolStrata
+    url: https://volstrata.com
+    about: Accounts, plans and API keys. Anything about your own account belongs here, not in a public issue.

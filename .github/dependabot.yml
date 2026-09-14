@@ -1,0 +1,25 @@
+# Copyright 2026 Volstrata.com - https://volstrata.com
+#
+# GitHub Actions only.
+#
+# There is no npm or pip ecosystem here on purpose: the examples have no runtime
+# dependency beyond `requests` (declared with a floor, not pinned) and the `fetch`
+# built into Node, and there is no lockfile for Dependabot to resolve against.
+# The one third-party Action this repository uses is pinned to a commit SHA in
+# .github/workflows/drift-check.yml, which is what Dependabot bumps here.
+#
+# The gitleaks release downloaded by .github/workflows/verify.yml is not an Action
+# and is not tracked here; bump that version by hand.
+
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    # "/" covers everything under .github/workflows.
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore"

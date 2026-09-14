@@ -1,6 +1,6 @@
 {
-  "api_version": "2026-09-01",
-  "catalog_fingerprint": "sha256:07d2dfe48736de886fc12ba7e9405ad4bd1ae512397f32ecbb9f9a99737e0957",
+  "api_version": "2026-09-09",
+  "catalog_fingerprint": "sha256:effea7406006c1cf2af82b839dfafb1934a227cc0e4ddad4b88d5134b04d95c2",
   "copyright": "Copyright 2026 Volstrata.com - https://volstrata.com",
   "counts": {
     "anonymous": 67,
@@ -678,6 +678,7 @@
         "ticker=SPX",
         "window?=today",
         "day?",
+        "{'default': 'objects', 'desc': 'frame array encoding', 'enum': ['objects', 'compact'], 'name': 'frames', 'required': False}",
         "format?=json"
       ],
       "path": "/api/v1/exposure/timeline",
