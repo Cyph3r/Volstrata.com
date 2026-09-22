@@ -104,7 +104,7 @@ vs_note ''
 vs_note 'gex.snapshot takes more than a ticker: window=, view=, greek=, at= and'
 vs_note 'format= all have documented defaults, so ?ticker= alone is a valid call.'
 vs_note 'Its defaults are listed with every other parameter in the catalog and in'
-vs_note 'the public OpenAPI document at https://volstrata.com/api/openapi.json'
+vs_note 'the public OpenAPI document at https://api.volstrata.com/api/openapi.json'
 
 vs_title 'The rest of the domain'
 vs_note 'gex is the largest domain on the API: 16 capabilities, of which the six'

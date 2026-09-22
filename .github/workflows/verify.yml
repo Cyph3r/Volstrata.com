@@ -59,7 +59,7 @@ jobs:
           fi
 
       # Regenerates docs/reference/ into a scratch directory from
-      # https://volstrata.com/api/openapi.json and the public capability
+      # https://api.volstrata.com/api/openapi.json and the public capability
       # catalog, and fails if the committed copy differs. Nothing under
       # docs/reference/ is hand-written.
       - name: Check docs/reference against the live public API

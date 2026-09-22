@@ -33,7 +33,7 @@ These two are the only environment variables this repository reads. Both are opt
 | Variable | Default | What it does |
 |---|---|---|
 | `VOLSTRATA_API_KEY` | unset | When set, every request carries `Authorization: Bearer <key>`. When unset, requests go out anonymously — a fully supported mode: 67 of the 180 published operations sit at the Free plan floor and most of those answer without any credential. |
-| `VOLSTRATA_BASE_URL` | `https://volstrata.com` | The host to call. Override only if you have been told to. |
+| `VOLSTRATA_API_BASE` | `https://api.volstrata.com` | The host to call. Override only if you have been told to. |
 
 ```sh
 export VOLSTRATA_API_KEY=YOUR_API_KEY    # https://volstrata.com/api-keys

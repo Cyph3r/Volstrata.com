@@ -18,10 +18,15 @@
 // ---------------------------------------------------------------------------
 
 /**
- * Base URL of the API. Override with VOLSTRATA_BASE_URL only if you have been
- * told to; https://volstrata.com is the canonical public host.
+ * Base URL of the API. Override with VOLSTRATA_API_BASE only if you have been
+ * told to; https://api.volstrata.com is the canonical API host. The older
+ * VOLSTRATA_BASE_URL is still read as a fallback.
  */
-export const BASE = (process.env.VOLSTRATA_BASE_URL ?? "https://volstrata.com").replace(/\/+$/, "");
+export const BASE = (
+  process.env.VOLSTRATA_API_BASE ??
+  process.env.VOLSTRATA_BASE_URL ??
+  "https://api.volstrata.com"
+).replace(/\/+$/, "");
 
 /**
  * Optional API key. 67 of the 180 published capabilities sit at the Free floor
@@ -74,7 +79,7 @@ export function headers(extra = {}) {
 /**
  * Every refusal from the API is an RFC 9457 problem document:
  *
- *   {"ok": false, "type": "https://volstrata.com/errors/<code>", "title": "...",
+ *   {"ok": false, "type": "<origin>/errors/<code>", "title": "...",
  *    "status": 402, "detail": "...", "instance": "/api/v1/...", "code": "...",
  *    "request_id": "..."}
  *

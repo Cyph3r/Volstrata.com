@@ -19,7 +19,7 @@ node mcp/call_a_tool.mjs SPX   # tools/call, twice: one free tool, one gated
 ## The endpoint
 
 ```
-POST https://volstrata.com/api/v1/mcp
+POST https://api.volstrata.com/api/v1/mcp
 Content-Type: application/json
 Authorization: Bearer <your key>     ← optional; anonymous callers get the free tools
 ```
@@ -87,8 +87,8 @@ refused by `tools/call`.
 If the whole catalog is more than an agent's context should hold, narrow it:
 
 ```
-POST https://volstrata.com/api/v1/mcp?toolset=lean          → 10 tools
-POST https://volstrata.com/api/v1/mcp?toolset=gex,levels    → those domains only
+POST https://api.volstrata.com/api/v1/mcp?toolset=lean          → 10 tools
+POST https://api.volstrata.com/api/v1/mcp?toolset=gex,levels    → those domains only
 ```
 
 `list_tools.mjs` takes the same selector as its first argument:
@@ -114,7 +114,7 @@ To point an MCP client at this endpoint rather than writing your own loop:
 {
   "mcpServers": {
     "volstrata": {
-      "url": "https://volstrata.com/api/v1/mcp",
+      "url": "https://api.volstrata.com/api/v1/mcp",
       "headers": { "Authorization": "Bearer YOUR_API_KEY" }
     }
   }

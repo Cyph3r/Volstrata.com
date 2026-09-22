@@ -6,7 +6,7 @@ Every tool the VolStrata MCP server projects, derived from the public capability
 
 | | |
 | --- | --- |
-| Endpoint | `POST https://volstrata.com/api/v1/mcp` |
+| Endpoint | `POST https://api.volstrata.com/api/v1/mcp` |
 | Protocol | `JSON-RPC 2.0` |
 | API version | `2026-09-09` |
 | Catalog fingerprint | `sha256:effea7406006c1cf2af82b839dfafb1934a227cc0e4ddad4b88d5134b04d95c2` |

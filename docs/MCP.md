@@ -12,7 +12,7 @@ Product site: <https://volstrata.com> · Connect page: <https://volstrata.com/mc
 ## Endpoint
 
 ```
-POST https://volstrata.com/api/v1/mcp
+POST https://api.volstrata.com/api/v1/mcp
 Content-Type: application/json
 ```
 
@@ -91,13 +91,13 @@ Response (abridged — `serverInfo` carries more members than are shown here):
       "prompts": { "listChanged": true },
       "completions": {}
     },
-    "serverInfo": { "title": "VolStrata", "version": "2026-09-01" }
+    "serverInfo": { "title": "VolStrata", "version": "2026-09-09" }
   }
 }
 ```
 
 `serverInfo.title` is `"VolStrata"` — that is the name to display in a client UI.
-`serverInfo.version` (`"2026-09-01"`) matches the API version stamped on REST responses.
+`serverInfo.version` (`"2026-09-09"`) matches the API version stamped on REST responses.
 
 Resource subscriptions are not offered (`resources.subscribe` is `false`), so poll
 `resources/read` rather than waiting for change notifications.
@@ -165,7 +165,7 @@ endpoint URL or as a `params.toolset` member on `tools/list`:
 | `?toolset=gex,levels` | Only tools in the named domains (this pair returns 15) |
 
 ```
-POST https://volstrata.com/api/v1/mcp?toolset=lean
+POST https://api.volstrata.com/api/v1/mcp?toolset=lean
 ```
 
 `lean` is the recommended starting point for an agent: three meta-tools plus a handful of

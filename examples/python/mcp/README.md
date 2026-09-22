@@ -4,7 +4,7 @@ Raw JSON-RPC 2.0 against the VolStrata MCP endpoint, using `requests` and nothin
 else. No `mcp` SDK, no client library, no framework — just the wire protocol, so
 these run wherever Python does and show you exactly what a client sends.
 
-Endpoint: `POST https://volstrata.com/api/v1/mcp`
+Endpoint: `POST https://api.volstrata.com/api/v1/mcp`
 Connect page: <https://volstrata.com/mcp>
 Protocol reference for this API: [`../../../docs/MCP.md`](../../../docs/MCP.md)
 Client configuration: [`../../../docs/MCP_CLIENTS.md`](../../../docs/MCP_CLIENTS.md)

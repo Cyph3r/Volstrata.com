@@ -74,7 +74,7 @@ jobs:
           done > "$RUNNER_TEMP/before.txt"
           cat "$RUNNER_TEMP/before.txt"
 
-      # Fetches https://volstrata.com/api/openapi.json, the public capability
+      # Fetches https://api.volstrata.com/api/openapi.json, the public capability
       # catalog and the anonymous MCP tool list, and rewrites docs/reference/.
       # No credential is used; nothing else in the tree is touched.
       - name: Regenerate docs/reference

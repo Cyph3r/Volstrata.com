@@ -12,7 +12,7 @@ only when you reach an example that says it needs one — see [`../.env.example`
 | [`curl/`](curl/) | Shell scripts, one per domain group, using nothing but `curl`. The reference implementation the other languages are checked against. | 2 |
 | [`python/`](python/) | Python examples using `requests` only: quickstart, authentication and RFC 9457 error handling, and one commented file per domain group. | 1 |
 | [`javascript/`](javascript/) | Node 18+ examples using the runtime's native `fetch`, with no runtime dependencies. | 3 |
-| [`mcp/`](mcp/) | Raw JSON-RPC 2.0 against `POST https://volstrata.com/api/v1/mcp` — `initialize`, `tools/list`, `tools/call` — plus a drop-in client configuration block. | 4 |
+| [`mcp/`](mcp/) | Raw JSON-RPC 2.0 against `POST https://api.volstrata.com/api/v1/mcp` — `initialize`, `tools/list`, `tools/call` — plus a drop-in client configuration block. | 4 |
 
 Priority is the order these were built and the order to read them in. Python is first
 because it is the largest audience for this API; curl is the foundation every other
@@ -22,7 +22,7 @@ language mirrors, so if two examples ever disagree, the curl one is correct.
 
 - An explicit `User-Agent` header. Some default agents are refused at the CDN edge before
   the request reaches the API, returning a plain-text 403 that is not JSON.
-- Credentials read from the environment (`VOLSTRATA_API_KEY`, `VOLSTRATA_BASE_URL`),
+- Credentials read from the environment (`VOLSTRATA_API_KEY`, `VOLSTRATA_API_BASE`),
   never hardcoded.
 - Real error handling: refusals arrive as `application/problem+json` and are parsed, not
   dumped. A call to a gated capability degrades with a message naming the required plan.

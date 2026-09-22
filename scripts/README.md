@@ -38,7 +38,7 @@ Writes four files into `docs/reference/`:
 
 | File | How it is produced |
 |---|---|
-| `openapi.json` | `GET https://volstrata.com/api/openapi.json`, saved byte-for-byte verbatim. |
+| `openapi.json` | `GET https://api.volstrata.com/api/openapi.json`, saved as served apart from one rewrite: the `servers` array. |
 | `REST_ENDPOINTS.md` | Rendered from that document: one table per domain tag, every operation with its method, path and plan floor. The floor is the only gate the specification publishes per operation, so it is the only one this table states — a Free floor is not a promise of anonymous access, and `GET /api/v1/meta/access` is the runtime answer. |
 | `mcp-tools.json` | The MCP tool table, projected from `GET /api/v1/meta/capabilities` (paged to the end) with each tool marked reachable-anonymously or not, from an un-credentialed `tools/list` against `POST /api/v1/mcp`. |
 | `MCP_TOOLS.md` | Rendered from `mcp-tools.json`. |
@@ -46,7 +46,7 @@ Writes four files into `docs/reference/`:
 Options:
 
 ```
---base <url>            Host to fetch from. Default https://volstrata.com.
+--base <url>            Host to fetch from. Default https://api.volstrata.com.
 --source live           Fetch the OpenAPI document from --base (default).
 --source local:<path>   Read the OpenAPI document from a file you already have.
                         The capability catalog and MCP tool list still come from --base.
@@ -74,10 +74,14 @@ requests and the scheduled job opens a noise pull request every week. So:
   exception is a capability's `params` list, whose source order is meaningful and is
   preserved as received.
 - Generated text is written with LF line endings on every platform.
-- `openapi.json` is copied verbatim: no reformatting, no re-serialisation, no key
-  reordering, and no header of ours. It is served with CRLF line endings, so it must not
-  be normalised on checkout or the byte comparison fails — see
-  [`../docs/reference/README.md`](../docs/reference/README.md).
+- `openapi.json` is copied as served: no reformatting, no re-serialisation, no key
+  reordering, and no header of ours. The single exception is the `servers` array, which is
+  rewritten to put the canonical API host `https://api.volstrata.com` first and keep the
+  apex origin `https://volstrata.com` as a second, labelled entry — the live document
+  advertises only the apex, and every example in this repo calls the API host. The rewrite
+  is deterministic and is applied on both sides of the drift comparison. It is served with
+  CRLF line endings, so it must not be normalised on checkout or the byte comparison
+  fails — see [`../docs/reference/README.md`](../docs/reference/README.md).
 
 ### Live API etiquette
 

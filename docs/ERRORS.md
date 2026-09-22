@@ -18,7 +18,7 @@ Refusals are served as `application/problem+json` per
 
 | Field | Type | Meaning |
 |---|---|---|
-| `type` | string | `https://volstrata.com/errors/<code>` — a stable URI identifying the error class |
+| `type` | string | `<origin>/errors/<code>` — a stable URI identifying the error class. The `<origin>` prefix is built from the host you called, so the same refusal reads `https://volstrata.com/errors/...` from the apex and `http://api.volstrata.com/errors/...` from the API host. It is an identifier, not a link to fetch: branch on `code`, never on the whole string |
 | `title` | string | Short, human-readable summary of the class. Stable for a given `type` |
 | `status` | number | The HTTP status code, repeated in the body |
 | `detail` | string | What went wrong *with this request*. Written for a human; may change wording |
@@ -47,7 +47,7 @@ A **plan refusal** (402) adds four more:
 // Illustrative.
 {
   "ok": false,
-  "type": "https://volstrata.com/errors/auth_required",
+  "type": "<origin>/errors/auth_required",
   "title": "Authentication required",
   "status": 401,
   "detail": "This capability requires a credential. Send 'Authorization: Bearer <key>' or '?api_key=<key>'. Accepted prefixes: gex_key_v1_, sig_key_v1_, sig_pat_v1_, sig_svc_v1_.",
@@ -69,7 +69,7 @@ is actually set in the process that made the call, and that the header reads
 // Illustrative.
 {
   "ok": false,
-  "type": "https://volstrata.com/errors/<error-code>",
+  "type": "<origin>/errors/<error-code>",
   "title": "Plan upgrade required",
   "status": 402,
   "detail": "'gex.snapshot' requires the Edge plan.",
@@ -100,7 +100,7 @@ been renamed before. Which operations sit behind which floor is in
 // Illustrative.
 {
   "ok": false,
-  "type": "https://volstrata.com/errors/route_not_found",
+  "type": "<origin>/errors/route_not_found",
   "title": "Not found",
   "status": 404,
   "detail": "No capability is published at this path.",
@@ -122,7 +122,7 @@ not published. Confirm the name against the generated reference or the free
 // Illustrative.
 {
   "ok": false,
-  "type": "https://volstrata.com/errors/<error-code>",
+  "type": "<origin>/errors/<error-code>",
   "title": "Too many requests",
   "status": 429,
   "detail": "Rate limit exceeded. Retry after the interval named in the Retry-After header.",

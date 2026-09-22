@@ -10,7 +10,7 @@
 #
 # Requests: 6.
 #
-# There is one MCP endpoint and it is POST https://volstrata.com/api/v1/mcp.
+# There is one MCP endpoint and it is POST https://api.volstrata.com/api/v1/mcp.
 # It is the transport an MCP client speaks; this script is what that client
 # does, written out in curl so you can watch it happen.
 

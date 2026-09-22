@@ -11,7 +11,7 @@ Three messages, in the order every MCP client sends them:
     2. notifications/initialized   a notification: no id, no reply
     3. tools/list                  what this caller may call
 
-All three are POSTs to https://volstrata.com/api/v1/mcp carrying a JSON-RPC 2.0
+All three are POSTs to https://api.volstrata.com/api/v1/mcp carrying a JSON-RPC 2.0
 envelope. There is no SDK involved and none is needed -- this is `requests` and
 a dict.
 

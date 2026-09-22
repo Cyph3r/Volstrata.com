@@ -18,7 +18,7 @@ The exhaustive, generated operation table lives in
 | Domains (OpenAPI tags) | **56** |
 | Operations at the Free plan floor | **67** |
 | Base path | `/api/v1` |
-| Contract version, on every response | `x-gex-api-version: 2026-09-01` |
+| Contract version, on every response | `x-gex-api-version: 2026-09-09` |
 
 Read operations are GET with query parameters. The seven POST operations take a JSON body
 because their input is a document rather than a handful of scalars: `voloi.combined`,
@@ -37,7 +37,7 @@ name is the same string in all three places you will meet it:
 ```
 capability name    gex.levels
 OpenAPI operationId gex.levels
-URL path            https://volstrata.com/api/v1/gex/levels
+URL path            https://api.volstrata.com/api/v1/gex/levels
 ```
 
 The rule is mechanical: **the dots become slashes** under `/api/v1`. So `market.status` is
@@ -135,12 +135,18 @@ Read the envelope's `total` for the row count rather than assuming one — the c
 Reports what the *calling credential* can reach. Anonymous callers get the anonymous answer,
 so it is also useful as a "is my key being seen correctly?" check when a 402 surprises you.
 
-### `GET https://volstrata.com/api/openapi.json`
+### `GET https://api.volstrata.com/api/openapi.json`
 
 The full OpenAPI 3.1 document, public and unauthenticated. Its `info.version` is the same
 dated contract version the `x-gex-api-version` header reports, `info["x-base"]` is `/api/v1`,
-and `servers[0].url` is `https://volstrata.com`. It is the source the generated reference in
-this repo is built from, and the right input if you want to generate a client of your own.
+and its `servers` array lists `https://api.volstrata.com` first. It is the source the
+generated reference in this repo is built from, and the right input if you want to generate
+a client of your own.
+
+The live document advertises only the apex origin `https://volstrata.com` in `servers`;
+the copy under [`reference/`](./reference/) lists the API host first and keeps the apex as a
+second, labelled entry. That is the one rewrite `scripts/sync_catalog.py` applies, and it is
+applied on both sides of the CI drift check. Both hosts serve the identical API.
 
 A checked-in copy lives under [`reference/`](./reference/), regenerated and diffed by CI so it
 cannot silently drift from the live document.

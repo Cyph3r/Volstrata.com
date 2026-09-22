@@ -3,10 +3,14 @@
 From nothing to a real HTTP response in three steps, no account and no API key required.
 API home: <https://volstrata.com>
 
-- **Base URL:** `https://volstrata.com`
+- **Base URL:** `https://api.volstrata.com`
 - **Base path:** `/api/v1`
-- **Auth for this page:** none — 67 of the 180 published operations sit at the Free plan
-  floor and most of those, including every call on this page, answer with no credential.
+- **Auth for this page:** none — every call on this page answers an anonymous caller.
+- **One thing to know up front:** an operation that answers *about a symbol* (`gex.levels`,
+  `gex.snapshot`, `levels.day`, …) refuses an anonymous caller with `401 account_required`
+  even at the Free plan floor — "Sign in to a free account to view SPX". Free account,
+  free key, no payment. Operations that answer about the *surface itself* need nothing;
+  this page uses one of those so you can run it right now. Step 4 adds the key.
 
 ---
 
@@ -30,14 +34,15 @@ Full explanation of that failure mode, and how to detect it in code, is in
 
 ---
 
-## Step 2 — Call a free endpoint
+## Step 2 — Call an open endpoint
 
-`gex.levels` needs no credential. Ask it for SPX:
+`docs.metrics` needs no credential and no account. It returns the glossary of every
+metric the analytics surface reports:
 
 ```bash
 curl -sS \
   -A "volstrata-examples/1.0" \
-  "https://volstrata.com/api/v1/gex/levels?ticker=SPX"
+  "https://api.volstrata.com/api/v1/docs/metrics"
 ```
 
 Python, standard library only — note the explicit agent:
@@ -47,7 +52,7 @@ import json
 import urllib.request
 
 req = urllib.request.Request(
-    "https://volstrata.com/api/v1/gex/levels?ticker=SPX",
+    "https://api.volstrata.com/api/v1/docs/metrics",
     headers={
         "Accept": "application/json",
         "User-Agent": "volstrata-examples/1.0",  # required: see Step 1
@@ -63,7 +68,7 @@ JavaScript, Node 18+ (native `fetch`, no dependencies):
 
 ```javascript
 const res = await fetch(
-  "https://volstrata.com/api/v1/gex/levels?ticker=SPX",
+  "https://api.volstrata.com/api/v1/docs/metrics",
   { headers: { Accept: "application/json", "User-Agent": "volstrata-examples/1.0" } },
 );
 const data = await res.json();
@@ -77,21 +82,26 @@ its own, which the edge accepts. The header matters for scripts and servers, not
 
 ## Step 3 — Read `ok`, then read the payload
 
-Successful responses are a JSON object whose first field is `ok`. The rest of the object
-is the operation's own payload. For `gex.levels` the top-level keys are
-`ok`, `ticker`, `spot`, `ts`, `updated`, and `levels`:
+Successful responses are a JSON object carrying an `ok` flag. The rest of the object is
+the operation's own payload. For `docs.metrics` that is `count` and `docs`:
 
 ```jsonc
-// Illustrative shape. Values are synthetic — print the live response to see real ones.
+// Abridged from a live response. The full call returns all 14 entries.
 {
   "ok": true,
-  "ticker": "SPX",
-  "spot": 5000.0,
-  "ts": "…",
-  "updated": "…",
-  "levels": { "…": "…" }
+  "count": 14,
+  "docs": [
+    {
+      "metric": "call_wall",
+      "title": "Call Wall (CW)",
+      "short": "Strike carrying the largest positive dealer gamma — magnetic resistance."
+    }
+  ]
 }
 ```
+
+A ticker-scoped operation answers with a different payload — `ok`, `ticker`, `spot`, `ts`,
+`updated`, `levels` for `gex.levels` — once you are signed in. Step 4 gets you there.
 
 Two habits worth forming on your very first call:
 
@@ -118,7 +128,7 @@ export VOLSTRATA_API_KEY="gex_key_v1_XXXXXXXX"   # placeholder, not a real key
 curl -sS \
   -A "volstrata-examples/1.0" \
   -H "Authorization: Bearer ${VOLSTRATA_API_KEY}" \
-  "https://volstrata.com/api/v1/gex/snapshot?ticker=SPX"
+  "https://api.volstrata.com/api/v1/gex/snapshot?ticker=SPX"
 ```
 
 If the key is missing you get **401** (`auth_required`). If the key is valid but your plan
@@ -128,7 +138,7 @@ them, are in [ERRORS.md](./ERRORS.md); the credential formats are in
 [AUTHENTICATION.md](./AUTHENTICATION.md).
 
 Never hard-code a key in a file you commit. This repo reads `VOLSTRATA_API_KEY` (and
-optionally `VOLSTRATA_BASE_URL`) from the environment everywhere, and ships only an
+optionally `VOLSTRATA_API_BASE`) from the environment everywhere, and ships only an
 `.env.example`.
 
 ---
