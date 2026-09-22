@@ -14,7 +14,7 @@ first time; after that, use the table as an index.
 | [`FRESHNESS_AND_DELIVERY.md`](FRESHNESS_AND_DELIVERY.md) | The `Freshness` and `Delivery` blocks — `as_of`, `age_seconds`, `live`, `stale`, and the `live` vs `delayed` delivery mode with its `delay_seconds` and `reason`. |
 | [`MCP.md`](MCP.md) | The MCP endpoint: JSON-RPC 2.0 over `POST /api/v1/mcp`, protocol negotiation, the methods answered, tools, resources, prompts, and the toolset selector. |
 | [`MCP_CLIENTS.md`](MCP_CLIENTS.md) | Connecting a real MCP client: the configuration block, where the key goes, and what an anonymous client sees versus an authenticated one. |
-| [`reference/`](reference/) | Generated, exhaustive reference — the full endpoint table, the MCP tool list, and a verbatim copy of the public OpenAPI document. Never hand-edited; see [`../CONTRIBUTING.md`](../CONTRIBUTING.md). |
+| [`reference/`](reference/) | Generated, exhaustive reference — the full endpoint table, the MCP tool list, and the public OpenAPI document as served, with its `servers` array pointed at the canonical API host. Never hand-edited; see [`../CONTRIBUTING.md`](../CONTRIBUTING.md). |
 
 Runnable code for everything described here lives in [`../examples/`](../examples/).
 
