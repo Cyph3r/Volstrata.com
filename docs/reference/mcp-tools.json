@@ -8,14 +8,14 @@
     "meta_tools": 3,
     "total": 177
   },
-  "endpoint": "https://volstrata.com/api/v1/mcp",
+  "endpoint": "https://api.volstrata.com/api/v1/mcp",
   "generator": {
     "command": "python scripts/sync_catalog.py",
     "do_not_edit": "Generated file - do not edit by hand. Regenerate with `python scripts/sync_catalog.py`; CI fails on any difference.",
     "sources": {
-      "capabilities": "https://volstrata.com/api/v1/meta/capabilities",
-      "mcp": "https://volstrata.com/api/v1/mcp",
-      "openapi": "https://volstrata.com/api/openapi.json"
+      "capabilities": "https://api.volstrata.com/api/v1/meta/capabilities",
+      "mcp": "https://api.volstrata.com/api/v1/mcp",
+      "openapi": "https://api.volstrata.com/api/openapi.json"
     }
   },
   "protocol": "JSON-RPC 2.0",

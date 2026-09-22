@@ -32,7 +32,7 @@ Two environment variables are read, and no others:
 | Variable | Required | Meaning |
 |---|---|---|
 | `VOLSTRATA_API_KEY` | no | Sent as a bearer token when set. Some capabilities need one; many do not. |
-| `VOLSTRATA_BASE_URL` | no | Defaults to `https://volstrata.com`. Set it only to point at a proxy of your own. |
+| `VOLSTRATA_API_BASE` | no | Defaults to `https://api.volstrata.com`. Set it only to point at a proxy of your own. |
 
 ## The files
 
@@ -122,7 +122,7 @@ problem document, and bound your retries.
 - <https://volstrata.com/docs/api-errors> — the refusal envelope
 - <https://volstrata.com/docs/api-rate-limits> — ceilings and headers
 - <https://volstrata.com/docs/api-catalog> — every published capability
-- <https://volstrata.com/mcp> — the MCP endpoint
+- <https://volstrata.com/mcp> — the MCP connect page
 - [`../curl/`](../curl/) — the same calls in a shell
 - [`../../docs/reference/REST_ENDPOINTS.md`](../../docs/reference/REST_ENDPOINTS.md) — the generated surface reference
 

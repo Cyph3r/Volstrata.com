@@ -22,7 +22,7 @@ vs_auth_status
 #
 #   curl -sS \
 #     -H "User-Agent: volstrata-examples/1.0 (+https://volstrata.com)" \
-#     "https://volstrata.com/api/v1/gex/levels?ticker=SPX"
+#     "https://api.volstrata.com/api/v1/gex/levels?ticker=SPX"
 #
 # The User-Agent header is the only part that is easy to leave out and still
 # regret; see the note at the top of _common.sh for why.

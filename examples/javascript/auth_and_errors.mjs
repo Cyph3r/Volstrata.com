@@ -125,7 +125,7 @@ if (!hasApiKey) {
 // credential families the API accepts:
 //
 //     {"ok": false, "status": 401, "code": "auth_required",
-//      "type": "https://volstrata.com/errors/auth_required",
+//      "type": "<origin>/errors/auth_required",
 //      "title": "Authentication required", "detail": "…",
 //      "instance": "/api/v1/gex/snapshot", "request_id": "…"}
 //

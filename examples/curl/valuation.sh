@@ -83,7 +83,7 @@ vs_call "fundamentals.company - $TICKER" \
 #     -H "Authorization: Bearer $VOLSTRATA_API_KEY" \
 #     -H 'Content-Type: application/json' \
 #     -d '{"ticker":"AAPL"}' \
-#     "https://volstrata.com/api/v1/valuation/value"
+#     "https://api.volstrata.com/api/v1/valuation/value"
 #
 # Content-Type: application/json is required - the body is parsed as JSON, not
 # as a form. `overrides` is an optional documented parameter and is left out

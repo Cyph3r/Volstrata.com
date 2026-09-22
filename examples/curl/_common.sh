@@ -19,8 +19,9 @@ set -eu
 # reads. Nothing here is written to disk and no credential is ever printed.
 # ---------------------------------------------------------------------------
 
-# The canonical public host. Override only if you have been told to.
-BASE="${VOLSTRATA_BASE_URL:-https://volstrata.com}"
+# The canonical API host. Override only if you have been told to. The older
+# VOLSTRATA_BASE_URL is still read as a fallback.
+BASE="${VOLSTRATA_API_BASE:-${VOLSTRATA_BASE_URL:-https://api.volstrata.com}}"
 
 # Sent on every single request, and not optional.
 #

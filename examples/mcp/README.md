@@ -3,7 +3,7 @@
 Client configuration templates and ready-to-POST JSON-RPC bodies for the VolStrata MCP
 endpoint.
 
-- Endpoint: `POST https://volstrata.com/api/v1/mcp`
+- Endpoint: `POST https://api.volstrata.com/api/v1/mcp`
 - Protocol reference: [`docs/MCP.md`](../../docs/MCP.md)
 - Client setup and its caveats: [`docs/MCP_CLIENTS.md`](../../docs/MCP_CLIENTS.md)
 - Product site: <https://volstrata.com>
@@ -39,7 +39,7 @@ server entry, not a claim about where your client stores its config. See
 Every file in `requests/` is a complete JSON-RPC 2.0 request. POST one as-is:
 
 ```bash
-curl -sS https://volstrata.com/api/v1/mcp \
+curl -sS https://api.volstrata.com/api/v1/mcp \
   -H "Content-Type: application/json" \
   -H "User-Agent: volstrata-examples/1.0" \
   --data @requests/tools_list.json
@@ -48,7 +48,7 @@ curl -sS https://volstrata.com/api/v1/mcp \
 With a key, so gated tools appear:
 
 ```bash
-curl -sS https://volstrata.com/api/v1/mcp \
+curl -sS https://api.volstrata.com/api/v1/mcp \
   -H "Content-Type: application/json" \
   -H "User-Agent: volstrata-examples/1.0" \
   -H "Authorization: Bearer $VOLSTRATA_API_KEY" \
@@ -58,7 +58,7 @@ curl -sS https://volstrata.com/api/v1/mcp \
 A smaller tool projection, via the `toolset` selector:
 
 ```bash
-curl -sS "https://volstrata.com/api/v1/mcp?toolset=lean" \
+curl -sS "https://api.volstrata.com/api/v1/mcp?toolset=lean" \
   -H "Content-Type: application/json" \
   -H "User-Agent: volstrata-examples/1.0" \
   --data @requests/tools_list.json

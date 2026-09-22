@@ -2,7 +2,7 @@
 """Generate the VolStrata API + MCP reference under ``docs/reference/``.
 
 Everything this script writes is derived from two public, unauthenticated
-sources on https://volstrata.com — no API key is read, sent or required:
+sources on https://api.volstrata.com — no API key is read, sent or required:
 
   * ``GET  /api/openapi.json``            the OpenAPI 3.1 document (REST surface)
   * ``GET  /api/v1/meta/capabilities``    the paged runtime capability catalog
@@ -12,7 +12,8 @@ sources on https://volstrata.com — no API key is read, sent or required:
 
 It produces exactly four files:
 
-  * ``docs/reference/openapi.json``       byte-for-byte verbatim copy of the spec
+  * ``docs/reference/openapi.json``       the served spec, with one documented
+                                          rewrite: ``servers`` (see below)
   * ``docs/reference/REST_ENDPOINTS.md``  rendered from that spec
   * ``docs/reference/mcp-tools.json``     rendered from the capability catalog
   * ``docs/reference/MCP_TOOLS.md``       rendered from ``mcp-tools.json``
@@ -26,9 +27,16 @@ Design rules, because CI diffs the committed copies against a fresh run:
     spec itself. Every collection this script builds is sorted, and every text
     file is written with LF line endings.
   * ``--base`` changes where bytes are *fetched from*; it never changes what is
-    *written*. Public URLs printed into the generated files are derived from
-    ``servers[0].url`` inside the spec, so pointing the fetcher somewhere else
-    cannot leak that location into a committed artifact.
+    *written*. Every public URL printed into a generated file is the constant
+    ``PUBLIC_BASE`` below, so pointing the fetcher somewhere else cannot leak
+    that location into a committed artifact.
+  * The one rewrite applied to the spec bytes is the ``servers`` array: the
+    origin advertises the apex ``https://volstrata.com``, and this repo
+    standardises on the API host ``https://api.volstrata.com``. Both hosts
+    serve the identical document and the identical API; the rewrite lists the
+    API host first and keeps the apex as a second, labelled entry, so a
+    generated client calls the host the rest of this repo teaches. The rewrite
+    is deterministic, so ``--check`` applies it to both sides and stays green.
   * The CDN in front of the API refuses some default User-Agents before the
     request ever reaches the API — a plain-text body rather than the API's
     RFC 9457 JSON is the tell. The Python standard library's default
@@ -65,11 +73,23 @@ from collections import Counter, OrderedDict
 # --------------------------------------------------------------------------
 
 #: Public host the reference is generated from. Overridable with ``--base``.
-DEFAULT_BASE = "https://volstrata.com"
+DEFAULT_BASE = "https://api.volstrata.com"
 
-#: Fallback for the public URLs written into generated files, used only if the
-#: spec somehow carries no ``servers`` entry. Normally taken from the spec.
-CANONICAL_BASE = "https://volstrata.com"
+#: The canonical API host. Every public URL written into a generated file uses
+#: this, and it is what the ``servers`` rewrite below puts first. It is a
+#: constant rather than a value read out of the spec because the spec advertises
+#: the apex origin and this repo teaches the API host.
+PUBLIC_BASE = "https://api.volstrata.com"
+
+#: The apex origin the served spec advertises. Serves the identical API; kept as
+#: a second ``servers`` entry so the rewrite hides nothing. It is also the
+#: product site, so every narrative doc link written into a generated file uses
+#: it: ``/docs/api-catalog`` is a web page, not an API route.
+APEX_BASE = "https://volstrata.com"
+
+#: Alias for APEX_BASE, used where the URL being written is a site page rather
+#: than an API call. Same host, different meaning - naming it says which.
+SITE_BASE = APEX_BASE
 
 #: urllib's default ``Python-urllib/*`` is refused at the CDN edge with a
 #: plain-text body before the API sees it. Always send a real User-Agent.
@@ -328,14 +348,77 @@ def fetch_anonymous_tools(base):
 # --------------------------------------------------------------------------
 
 
-def public_base(spec):
-    """The public host to print into generated files, read from the spec."""
-    servers = spec.get("servers") or []
-    if servers and isinstance(servers[0], dict):
-        url = str(servers[0].get("url") or "").rstrip("/")
-        if url.startswith("https://"):
-            return url
-    return CANONICAL_BASE
+def public_base(spec=None):  # noqa: ARG001 - signature kept for call sites
+    """The public host to print into generated files.
+
+    Deliberately a constant and not ``spec["servers"][0]["url"]``: the origin
+    advertises the apex, this repo teaches the API host, and both serve the
+    same API. Taking it from the spec would make every generated page disagree
+    with every hand-written example in the repo.
+    """
+    return PUBLIC_BASE
+
+
+def rewrite_servers(raw):
+    """Point the spec's ``servers`` array at the canonical API host.
+
+    The served document advertises the apex origin. Every example, config and
+    generated page in this repo calls ``https://api.volstrata.com``; a spec that
+    disagreed would hand anyone generating a client off the spec a different
+    host from the one the README teaches. Both hosts serve the identical API, so
+    this rewrite changes which one is *default*, not which one works - and the
+    apex stays in the array, labelled, so nothing is hidden.
+
+    Operates on the raw bytes and touches nothing but that one array, so the
+    rest of the document stays byte-for-byte as served. Deterministic: the same
+    input always produces the same output, which is what lets ``--check`` diff a
+    fresh run against the committed copy.
+    """
+    key = b'"servers"'
+    at = raw.find(key)
+    if at == -1:
+        return raw
+    open_at = raw.find(b"[", at)
+    if open_at == -1:
+        return raw
+    depth = 0
+    close_at = -1
+    for i in range(open_at, len(raw)):
+        ch = raw[i : i + 1]
+        if ch == b"[":
+            depth += 1
+        elif ch == b"]":
+            depth -= 1
+            if depth == 0:
+                close_at = i
+                break
+    if close_at == -1:
+        return raw
+
+    lf = bytes([10])
+    crlf = bytes([13, 10])
+    eol = crlf if raw.find(crlf, 0, open_at) != -1 else lf
+    line_start = raw.rfind(lf, 0, at) + 1
+    indent = raw[line_start:at]
+    if indent.strip():
+        indent = b"  "
+    step = indent or b"  "
+
+    def entry(url, description, last):
+        return (
+            step * 2 + b"{" + eol
+            + step * 3 + b'"url": "' + url.encode("ascii") + b'",' + eol
+            + step * 3 + b'"description": "' + description.encode("ascii") + b'"' + eol
+            + step * 2 + b"}" + (b"" if last else b",") + eol
+        )
+
+    body = (
+        b"[" + eol
+        + entry(PUBLIC_BASE, "Production - the canonical API host", False)
+        + entry(APEX_BASE, "Apex origin - serves the identical API", True)
+        + indent + b"]"
+    )
+    return raw[:open_at] + body + raw[close_at + 1 :]
 
 
 def spec_version(spec):
@@ -525,7 +608,9 @@ def render_rest_endpoints(spec):
     out.append("---")
     out.append("")
     out.append(
-        "Narrative documentation lives at [{0}/docs/api-catalog]({0}/docs/api-catalog).".format(base)
+        "Narrative documentation lives at [{0}/docs/api-catalog]({0}/docs/api-catalog).".format(
+            SITE_BASE
+        )
     )
     out.append("")
     out.append(COPYRIGHT)
@@ -755,7 +840,7 @@ def render_mcp_tools(doc):
     out.append("")
     out.append(
         "Connect a client with [{0}/docs/api-catalog]({0}/docs/api-catalog) and "
-        "[{0}/docs/api-auth]({0}/docs/api-auth).".format(base)
+        "[{0}/docs/api-auth]({0}/docs/api-auth).".format(SITE_BASE)
     )
     out.append("")
     out.append(COPYRIGHT)
@@ -809,9 +894,10 @@ def generate(base, source, out_dir, quiet=False):
             spec_version(spec), spec_fingerprint(spec), len(raw_spec)
         )
     )
-    # Verbatim: no reformat, no re-serialisation, no key reordering, and no
-    # header of ours - a byte-for-byte copy is the only thing CI can diff.
-    write_bytes(out_dir / "openapi.json", raw_spec)
+    # No reformat, no re-serialisation, no key reordering and no header of ours:
+    # a deterministic copy is the only thing CI can diff. The single rewrite is
+    # the `servers` array, for the reason documented on rewrite_servers().
+    write_bytes(out_dir / "openapi.json", rewrite_servers(raw_spec))
 
     say("2/4 rendering REST_ENDPOINTS.md")
     write_text(out_dir / "REST_ENDPOINTS.md", render_rest_endpoints(spec))

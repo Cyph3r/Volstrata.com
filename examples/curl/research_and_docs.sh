@@ -100,7 +100,7 @@ vs_note ''
 vs_note 'Every enum above is published in the OpenAPI document, so a client can'
 vs_note 'validate a request before sending it:'
 vs_note ''
-vs_note "  curl -sS 'https://volstrata.com/api/openapi.json' \\"
+vs_note "  curl -sS 'https://api.volstrata.com/api/openapi.json' \\"
 vs_note "    | jq '.paths[\"/api/v1/research/query\"].get.parameters'"
 vs_note ''
 vs_note 'That document is public, unauthenticated, and the same file this repo'

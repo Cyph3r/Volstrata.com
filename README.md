@@ -4,37 +4,45 @@ Runnable examples for the VolStrata public REST API and MCP endpoint, in curl, P
 
 [![verify](https://github.com/Cyph3r/Volstrata.com/actions/workflows/verify.yml/badge.svg)](https://github.com/Cyph3r/Volstrata.com/actions/workflows/verify.yml)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![API version 2026-09-01](https://img.shields.io/badge/API%20version-2026--09--01-e0b23a)](https://volstrata.com/api/openapi.json)
+[![API version 2026-09-09](https://img.shields.io/badge/API%20version-2026--09--09-e0b23a)](https://api.volstrata.com/api/openapi.json)
 
 ## 30-second quickstart
 
 No account, no key, no install. Paste this into a terminal:
 
 ```bash
-curl -sS -H 'User-Agent: volstrata-examples/1.0' 'https://volstrata.com/api/v1/gex/levels?ticker=SPX'
+curl -sS -H 'User-Agent: volstrata-examples/1.0' 'https://api.volstrata.com/api/v1/docs/metrics'
 ```
 
-The response is JSON. Abridged below, with illustrative values — a real call returns
-current numbers and more fields than are shown here:
+The response is JSON — the glossary of every metric the analytics surface reports.
+Abridged; the live call returns all 14:
 
 ```json
 {
   "ok": true,
-  "ticker": "SPX",
-  "spot": 6000.0,
-  "ts": 1780000000,
-  "updated": "2026-09-01 09:45:00 EDT",
-  "levels": {
-    "cw": 6100.0,
-    "pw": 5900.0,
-    "zg": 5975.0,
-    "mp": 6000.0,
-    "emHigh": 6060.0,
-    "emLow": 5940.0,
-    "hvl": null
-  }
+  "count": 14,
+  "docs": [
+    {
+      "metric": "call_wall",
+      "title": "Call Wall (CW)",
+      "short": "Strike carrying the largest positive dealer gamma — magnetic resistance."
+    },
+    {
+      "metric": "charm",
+      "title": "Charm Exposure",
+      "short": "Dealer sensitivity of delta to the passage of time (delta decay)."
+    }
+  ]
 }
 ```
+
+**Ticker-scoped market data asks for a free account.** Operations that answer *about a
+symbol* — `gex.levels`, `gex.snapshot`, `levels.day` and the rest — refuse an anonymous
+caller with `401 account_required` and the message "Sign in to a free account to view
+SPX", even though they sit at the Free plan floor. A free account and a key from
+<https://volstrata.com/api-keys> is the whole requirement. Operations that answer about
+the *surface itself* — the one above, `meta.capabilities`, `status.overview` — need
+nothing at all.
 
 Always send an explicit `User-Agent`. Some default agents — including the Python
 standard library's `Python-urllib/*` — are refused at the CDN edge with a plain-text
@@ -45,12 +53,12 @@ example in this repository sets one.
 
 | Fact | Value |
 |---|---|
-| REST base URL | `https://volstrata.com/api/v1` |
+| REST base URL | `https://api.volstrata.com/api/v1` |
 | REST operations | 180 across 56 domains — 173 `GET`, 7 `POST` |
-| Operations at the Free plan floor | 67 — most answer with no credential; a few ask for any valid key |
-| Machine-readable spec | [`GET /api/openapi.json`](https://volstrata.com/api/openapi.json) — OpenAPI 3.1, public, unauthenticated |
-| API version header | `x-gex-api-version: 2026-09-01` on every response |
-| MCP endpoint | `POST https://volstrata.com/api/v1/mcp` — JSON-RPC 2.0 |
+| Operations at the Free plan floor | 67 — surface and reference operations answer with no credential; ticker-scoped market data asks for a free account (see the quickstart note above) |
+| Machine-readable spec | [`GET /api/openapi.json`](https://api.volstrata.com/api/openapi.json) — OpenAPI 3.1, public, unauthenticated |
+| API version header | `x-gex-api-version: 2026-09-09` on every response |
+| MCP endpoint | `POST https://api.volstrata.com/api/v1/mcp` — JSON-RPC 2.0 |
 | MCP tools | 67 to an anonymous caller, 177 to a fully entitled one |
 
 That endpoint is the MCP transport to use; it needs no client library.

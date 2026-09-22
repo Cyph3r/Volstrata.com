@@ -89,7 +89,7 @@ Two variables are read, and nothing else.
 | Variable | Meaning |
 |---|---|
 | `VOLSTRATA_API_KEY` | Optional. Sent as `Authorization: Bearer <key>` when present. Never write a key into source — see [`../../.env.example`](../../.env.example) |
-| `VOLSTRATA_BASE_URL` | Optional. Defaults to `https://volstrata.com`, the canonical host |
+| `VOLSTRATA_API_BASE` | Optional. Defaults to `https://api.volstrata.com`, the canonical API host |
 
 ```bash
 export VOLSTRATA_API_KEY="gex_key_v1_XXXXXXXX"     # macOS / Linux

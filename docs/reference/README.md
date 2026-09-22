@@ -16,13 +16,20 @@ correcting the file.
 | [`REST_ENDPOINTS.md`](REST_ENDPOINTS.md) | Every published REST operation, grouped by domain: capability name, method, path, plan floor, whether a key is required. |
 | [`MCP_TOOLS.md`](MCP_TOOLS.md) | Every MCP tool, grouped by domain, with the plan floor and whether an anonymous caller can see it. |
 | [`mcp-tools.json`](mcp-tools.json) | The machine-readable form of the same tool table. |
-| [`openapi.json`](openapi.json) | The public OpenAPI 3.1 document, copied byte-for-byte. |
+| [`openapi.json`](openapi.json) | The public OpenAPI 3.1 document, as served, with the `servers` array pointed at the canonical API host. |
 
-`openapi.json` is a verbatim copy and therefore carries **no** banner, comment or header
-of ours — adding one would break the byte comparison that keeps it honest. It is served
-with CRLF line endings, which are preserved exactly as received; if your checkout
-normalises them, `check_drift.py` will report a line-ending mismatch on a file whose
-contents are otherwise identical.
+`openapi.json` carries **no** banner, comment or header of ours — adding one would break
+the byte comparison that keeps it honest. Exactly one thing in it differs from what the
+live host serves: the `servers` array lists `https://api.volstrata.com` first, with the
+apex origin `https://volstrata.com` kept as a second, labelled entry. The live document
+advertises only the apex; both hosts serve the identical API, and every example, config
+and generated page in this repo calls the API host, so a client generated from this spec
+should too. `scripts/sync_catalog.py` applies that rewrite deterministically and
+`check_drift.py` applies it to the fresh fetch as well, so the comparison stays exact.
+
+It is served with CRLF line endings, which are preserved exactly as received; if your
+checkout normalises them, `check_drift.py` will report a line-ending mismatch on a file
+whose contents are otherwise identical.
 
 The two Markdown files stamp only `info.version` and `info["x-catalog-fingerprint"]`, both
 read from the specification. Nothing here records when it was generated, or by whom.
@@ -31,7 +38,7 @@ read from the specification. Nothing here records when it was generated, or by w
 
 - [`../../scripts/README.md`](../../scripts/README.md) — how the generation and drift check work
 - [The public API catalog](https://volstrata.com/docs/api-catalog) — the same surface, browsable
-- [The specification itself](https://volstrata.com/api/openapi.json) — always current, always public
+- [The specification itself](https://api.volstrata.com/api/openapi.json) — always current, always public
 
 ---
 

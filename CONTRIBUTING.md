@@ -17,8 +17,8 @@ fix a broken example or improve a guide are welcome.
 ## docs/reference/ is generated — do not hand-edit
 
 Everything under `docs/reference/` is produced by `scripts/sync_catalog.py`, which reads
-the public OpenAPI document at https://volstrata.com/api/openapi.json and the public
-capability list at `GET https://volstrata.com/api/v1/meta/capabilities`. No endpoint name,
+the public OpenAPI document at https://api.volstrata.com/api/openapi.json and the public
+capability list at `GET https://api.volstrata.com/api/v1/meta/capabilities`. No endpoint name,
 path, parameter or plan floor in those four files is typed by hand.
 
 **The guides and the examples are different.** They do quote capability names, paths, plan
@@ -62,7 +62,7 @@ Every example must:
 - Set an explicit `User-Agent` header. Some default agents are refused at the CDN edge
   before the request reaches the API, and the resulting plain-text 403 is not JSON.
 - Read the API key from the `VOLSTRATA_API_KEY` environment variable, and the base URL
-  from `VOLSTRATA_BASE_URL`, defaulting to `https://volstrata.com`.
+  from `VOLSTRATA_API_BASE`, defaulting to `https://api.volstrata.com`.
 - Handle failure. Refusals are RFC 9457 `application/problem+json` — parse the body and
   print `title`, `status` and `detail` rather than dumping a stack trace.
 - Show the unauthenticated path explicitly. If an example calls a gated capability, it

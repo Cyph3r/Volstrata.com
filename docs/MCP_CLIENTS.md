@@ -15,7 +15,7 @@ This is the server entry the site itself publishes:
 {
   "mcpServers": {
     "volstrata": {
-      "url": "https://volstrata.com/api/v1/mcp",
+      "url": "https://api.volstrata.com/api/v1/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }
@@ -80,7 +80,7 @@ serverless function, your own agent loop.
 A minimal call, with no key, no client, and no dependencies:
 
 ```bash
-curl -sS https://volstrata.com/api/v1/mcp \
+curl -sS https://api.volstrata.com/api/v1/mcp \
   -H "Content-Type: application/json" \
   -H "User-Agent: volstrata-examples/1.0" \
   --data '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'

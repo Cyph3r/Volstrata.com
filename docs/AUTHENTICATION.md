@@ -9,10 +9,10 @@ attach. API home: <https://volstrata.com>
 
 | | |
 |---|---|
-| Host | `https://volstrata.com` |
+| Host | `https://api.volstrata.com` |
 | Base path | `/api/v1` |
-| A full URL | `https://volstrata.com/api/v1/<domain>/<name>` |
-| Version header on every response | `x-gex-api-version: 2026-09-01` |
+| A full URL | `https://api.volstrata.com/api/v1/<domain>/<name>` |
+| Version header on every response | `x-gex-api-version: 2026-09-09` |
 
 `/api/v1` is the only live API surface. The `/api/v2` base path is **retired**: nothing is
 served or advertised under it, so a request to it is a plain `404` — and, because no
@@ -20,8 +20,11 @@ capability route matches, that 404 comes from the web layer as HTML rather than 
 RFC 9457 problem document. If you are reading an old snippet that uses it, change the path
 segment to `v1` and nothing else — the operation names did not move.
 
-Clients in this repo read the host from `VOLSTRATA_BASE_URL` and default to
-`https://volstrata.com`, so you can point a script at the canonical host without editing it.
+Clients in this repo read the host from `VOLSTRATA_API_BASE` and default to
+`https://api.volstrata.com`, the canonical API host. The apex `https://volstrata.com`
+serves the identical API and keeps working, so an older snippet that names it is not
+broken — but every example here calls the API host. For compatibility the clients still
+read the older `VOLSTRATA_BASE_URL` if `VOLSTRATA_API_BASE` is unset.
 
 ---
 
@@ -65,7 +68,7 @@ is a valid length or alphabet, so neither can be mistaken for a live credential.
 curl -sS \
   -A "volstrata-examples/1.0" \
   -H "Authorization: Bearer ${VOLSTRATA_API_KEY}" \
-  "https://volstrata.com/api/v1/gex/snapshot?ticker=SPX"
+  "https://api.volstrata.com/api/v1/gex/snapshot?ticker=SPX"
 ```
 
 **Alternative — `api_key` query parameter:**
@@ -73,7 +76,7 @@ curl -sS \
 ```bash
 curl -sS \
   -A "volstrata-examples/1.0" \
-  "https://volstrata.com/api/v1/gex/snapshot?ticker=SPX&api_key=${VOLSTRATA_API_KEY}"
+  "https://api.volstrata.com/api/v1/gex/snapshot?ticker=SPX&api_key=${VOLSTRATA_API_KEY}"
 ```
 
 The query form exists for environments that cannot set a header — a spreadsheet formula, a
@@ -100,14 +103,14 @@ api_key = os.environ.get("VOLSTRATA_API_KEY")
 if api_key:
     session.headers["Authorization"] = f"Bearer {api_key}"
 
-base = os.environ.get("VOLSTRATA_BASE_URL", "https://volstrata.com")
+base = os.environ.get("VOLSTRATA_API_BASE", "https://api.volstrata.com")
 resp = session.get(f"{base}/api/v1/gex/levels", params={"ticker": "SPX"}, timeout=30)
 ```
 
 JavaScript (Node 18+, native `fetch`):
 
 ```javascript
-const base = process.env.VOLSTRATA_BASE_URL ?? "https://volstrata.com";
+const base = process.env.VOLSTRATA_API_BASE ?? "https://api.volstrata.com";
 const headers = {
   Accept: "application/json",
   "User-Agent": "volstrata-examples/1.0",

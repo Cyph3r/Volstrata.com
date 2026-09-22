@@ -50,7 +50,7 @@ A first page, by hand:
 ```bash
 curl -sS \
   -A "volstrata-examples/1.0" \
-  "https://volstrata.com/api/v1/meta/capabilities?limit=50"
+  "https://api.volstrata.com/api/v1/meta/capabilities?limit=50"
 ```
 
 ---

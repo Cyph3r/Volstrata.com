@@ -22,8 +22,12 @@
   },
   "servers": [
     {
+      "url": "https://api.volstrata.com",
+      "description": "Production - the canonical API host"
+    },
+    {
       "url": "https://volstrata.com",
-      "description": "Production"
+      "description": "Apex origin - serves the identical API"
     }
   ],
   "tags": [

@@ -26,7 +26,8 @@ Two environment variables are read, and nothing else:
 
   VOLSTRATA_API_KEY   optional. When present it is sent as `Authorization: Bearer
                       <key>`. Many capabilities answer without it.
-  VOLSTRATA_BASE_URL  optional. Defaults to the canonical host, https://volstrata.com
+  VOLSTRATA_API_BASE  optional. Defaults to the canonical API host,
+                      https://api.volstrata.com
 
 Never put a key in source. Export it in your shell instead:
 
@@ -50,9 +51,14 @@ import requests
 # Configuration
 # --------------------------------------------------------------------------
 
-# The canonical host. VOLSTRATA_BASE_URL exists so you can point the examples at
-# a proxy of your own; it is not something you normally need to set.
-BASE = os.environ.get("VOLSTRATA_BASE_URL", "https://volstrata.com").rstrip("/")
+# The canonical API host. VOLSTRATA_API_BASE exists so you can point the examples
+# at a proxy of your own; it is not something you normally need to set. The older
+# VOLSTRATA_BASE_URL is still read as a fallback.
+BASE = (
+    os.environ.get("VOLSTRATA_API_BASE")
+    or os.environ.get("VOLSTRATA_BASE_URL")
+    or "https://api.volstrata.com"
+).rstrip("/")
 
 # Optional. Running with no key at all is a supported mode, not a degraded one:
 # a large part of the published surface answers an anonymous caller.
@@ -85,7 +91,7 @@ class VolstrataError(Exception):
 
         {
           "ok": false,
-          "type": "https://volstrata.com/errors/<code>",
+          "type": "<origin>/errors/<code>",
           "title": "Authentication required",
           "status": 401,
           "detail": "...",
