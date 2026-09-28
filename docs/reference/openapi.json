@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "VolStrata Public API",
-    "version": "2026-09-09",
+    "version": "2026-09-28",
     "summary": "Options-gamma, greeks, flow, valuation and market-context capabilities, projected from the capability catalogue.",
     "description": "Generated from the published capability catalogue.\n\nEvery path is the canonical `/api/v1` spelling — the ONE surface (the /api/v2 alias is retired).\n\nEach operation carries its plan/entitlement floor (`x-plan-tier` slug, `x-plan-tier-name` customer-facing name, `x-policy-key`). Widget-feeding JSON reads fold in the shared `freshness` contract (`components.schemas.Freshness`) and the `delivery` contract (`components.schemas.Delivery`), which states whether a body is the live or a delayed lane and what would clear the delay. A small set of published literal-path reads (the daily-proof scorecard, the forecast backtest, the exposure projection and the Master Read) are projected alongside the catalogue.\n\nTELLING OUR REFUSALS FROM THE EDGE'S (write your client against this): every refusal issued by this API is RFC 9457 JSON (`application/problem+json`) carrying a `type` URL, a stable `code`, a `request_id`, and `ok: false`. If a refusal body is NOT JSON, it never reached us — it came from the CDN edge, which answers in `text/plain` (measured example: the Python stdlib's default `Python-urllib/*` User-Agent is refused 403 at the edge with a plain-text `error code: 1010` before we ever see the request; set any User-Agent, or use `requests`/`curl`). And check the HTTP status before the body shape: a rate-limit refusal is `429` with `code: \"rate_limited\"` and `ok: false` — a collector that only reads `body[\"series\"]` off a 429 records a normal empty day, which is a silent wrong answer, not a missing one.",
     "termsOfService": "https://volstrata.com/legal/terms",
@@ -16,7 +16,7 @@
       "email": "support@volstrata.com"
     },
     "x-copyright": "Copyright 2026 Volstrata.com - https://volstrata.com",
-    "x-api-version": "2026-09-09",
+    "x-api-version": "2026-09-28",
     "x-catalog-fingerprint": "sha256:effea7406006c1cf2af82b839dfafb1934a227cc0e4ddad4b88d5134b04d95c2",
     "x-base": "/api/v1"
   },
@@ -62,6 +62,10 @@
     {
       "name": "chain",
       "description": "chain capabilities (1)"
+    },
+    {
+      "name": "commodities",
+      "description": "commodities capabilities (1)"
     },
     {
       "name": "compare",
@@ -166,6 +170,10 @@
     {
       "name": "portfolio",
       "description": "portfolio capabilities (1)"
+    },
+    {
+      "name": "rates",
+      "description": "rates capabilities (1)"
     },
     {
       "name": "render",
@@ -17646,6 +17654,93 @@
               "default": "0"
             },
             "description": "arm the on-demand AI-seam trigger (stub; no LLM call)"
+          }
+        ]
+      }
+    },
+    "/api/v1/rates-curve": {
+      "get": {
+        "operationId": "rates.curve",
+        "summary": "rates.curve (Free)",
+        "description": "`rates.curve` capability. Public (Free tier). The US Treasury constant-maturity curve (1M-30Y), the two classic recession spreads (10Y-2Y and 10Y-3M) with the length of the CURRENT uninterrupted inverted run, and the two financial-conditions composites (both built so 0 is the long-run average and positive is tighter than average), each carrying its own observation date, age and an honest per-series freshness verdict. An absent series is null with a reason, never zero (on this page a 0 is a real reading). Read-only; never 500s - a cold store degrades to an honest empty-but-valid shape, and `{enabled:false}` if the surface is switched off.",
+        "tags": [
+          "rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid params / cursor).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "x-plan-tier": "free",
+        "x-plan-tier-name": "Free",
+        "x-policy-key": "public",
+        "x-aliases": "GET /api/v1/rates-curve",
+        "security": [],
+        "x-anonymous-access": "yes"
+      }
+    },
+    "/api/v1/commodities.json": {
+      "get": {
+        "operationId": "commodities.catalog",
+        "summary": "commodities.catalog (Free)",
+        "description": "`commodities.catalog` capability. Public (Free tier). The commodities landing grid - global commodity benchmark prices and, per commodity, the listed companies involved (mapped from public regulator industry codes) with a link per company to its valuation, DCF and earnings pages; pass `slug` for one commodity's detail. Read-only; never 500s. Returns an honest `{enabled:false}` not-switched-on notice until the catalog is published.",
+        "tags": [
+          "commodities"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid params / cursor).",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "x-plan-tier": "free",
+        "x-plan-tier-name": "Free",
+        "x-policy-key": "public",
+        "x-aliases": "GET /api/v1/commodities.json",
+        "security": [],
+        "x-anonymous-access": "yes",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "one commodity's detail (prices + the listed companies involved); omit for the full landing grid"
           }
         ]
       }
