@@ -1,12 +1,12 @@
 {
-  "api_version": "2026-09-28",
-  "catalog_fingerprint": "sha256:effea7406006c1cf2af82b839dfafb1934a227cc0e4ddad4b88d5134b04d95c2",
+  "api_version": "2026-10-08",
+  "catalog_fingerprint": "sha256:75ea4e534e225c83518b8ee33b2fbaee3139a62d164331298a2ca2e4ebe73439",
   "copyright": "Copyright 2026 Volstrata.com - https://volstrata.com",
   "counts": {
-    "anonymous": 67,
-    "capability_tools": 174,
-    "meta_tools": 3,
-    "total": 177
+    "anonymous": 81,
+    "capability_tools": 205,
+    "meta_tools": 7,
+    "total": 212
   },
   "endpoint": "https://api.volstrata.com/api/v1/mcp",
   "generator": {
@@ -20,6 +20,23 @@
   },
   "protocol": "JSON-RPC 2.0",
   "tools": [
+    {
+      "anonymous": true,
+      "description": "The honest daily-proof scorecard: for each recent session, did the published key levels settled at the prior close - the call wall, the put wall and the zero-gamma flip - HOLD, BREAK, or go UNTESTED against that session's own realised high, low and close.",
+      "domain": "accuracy",
+      "kind": "meta",
+      "method": null,
+      "name": "accuracy.did_it_hold",
+      "params": [
+        "sessions?=30",
+        "ticker?=SPX"
+      ],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "accuracy.did_it_hold"
+    },
     {
       "anonymous": true,
       "description": "The universal dispatcher: invoke ANY VolStrata capability by name with its arguments — the same gated route tools/call runs. {name, arguments}. A capability your plan can't run rides back as an error naming the required plan. Discover names with catalog.search.",
@@ -60,6 +77,22 @@
     },
     {
       "anonymous": true,
+      "description": "The commodities landing grid - global commodity benchmark prices and, per commodity, the listed companies involved (mapped from public regulator industry codes) with a link per company to its valuation, DCF and earnings pages; pass `slug` for one commodity's detail.",
+      "domain": "commodities",
+      "kind": "meta",
+      "method": null,
+      "name": "commodities.catalog",
+      "params": [
+        "slug?"
+      ],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "commodities.catalog"
+    },
+    {
+      "anonymous": true,
       "description": "Search VolStrata's methodology glossary — every metric definition (GEX, DEX, charm, vanna, gamma flip, max pain, air pocket, …). Returns matching metric slugs with a short definition and a body snippet, so the model explains a term in OUR vocabulary before calling tools.",
       "domain": "docs",
       "kind": "meta",
@@ -74,6 +107,34 @@
       "tier": "free",
       "tier_name": "Free",
       "title": "Search the metric glossary"
+    },
+    {
+      "anonymous": true,
+      "description": "The scarcity-immune companion to the live forecast scoreboard: a walk-forward, out-of-sample backtest of the served forecast cone over our own retained session history (windows never span the overnight reset).",
+      "domain": "forecast",
+      "kind": "meta",
+      "method": null,
+      "name": "forecast.backtest",
+      "params": [],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "forecast.backtest"
+    },
+    {
+      "anonymous": true,
+      "description": "The US Treasury constant-maturity curve (1M-30Y), the two classic recession spreads (10Y-2Y and 10Y-3M) with the length of the CURRENT uninterrupted inverted run, and the two financial-conditions composites (both built so 0 is the long-run average and positive is tighter than average), each carrying its own observation date, age and an honest per-series freshness verdict.",
+      "domain": "rates",
+      "kind": "meta",
+      "method": null,
+      "name": "rates.curve",
+      "params": [],
+      "path": null,
+      "policy_key": null,
+      "tier": "free",
+      "tier_name": "Free",
+      "title": "rates.curve"
     },
     {
       "anonymous": true,
@@ -327,6 +388,202 @@
       "tier_name": "Pro"
     },
     {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.catalog",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/catalog",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.flow",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/flow",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.hedge_bill",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/hedge_bill",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.iv_rank",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/iv_rank",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.off_exchange",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/off_exchange",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.oi_change",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/oi_change",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.oi_vintage",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/oi_vintage",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.spread_radar",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/spread_radar",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.structure",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/structure",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.ticker_vix_vrp",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/ticker_vix_vrp",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.universe_gamma",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/universe_gamma",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.vol",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/vol",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.vx_term",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/vx_term",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "bundles",
+      "kind": "capability",
+      "method": "GET",
+      "name": "bundles.whale_history",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/data-bundles/whale_history",
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
       "anonymous": true,
       "domain": "calendar",
       "kind": "capability",
@@ -553,6 +810,22 @@
       "domain": "cvd",
       "kind": "capability",
       "method": "GET",
+      "name": "cvd.latest",
+      "params": [
+        "ticker=SPX",
+        "symbol?",
+        "format?=json"
+      ],
+      "path": "/api/v1/cvd/latest",
+      "policy_key": "cvd",
+      "tier": "ultra",
+      "tier_name": "Ultra"
+    },
+    {
+      "anonymous": false,
+      "domain": "cvd",
+      "kind": "capability",
+      "method": "GET",
       "name": "cvd.series",
       "params": [
         "ticker=SPX",
@@ -565,8 +838,8 @@
       ],
       "path": "/api/v1/cvd/series",
       "policy_key": "cvd",
-      "tier": "edge",
-      "tier_name": "Edge"
+      "tier": "ultra",
+      "tier_name": "Ultra"
     },
     {
       "anonymous": false,
@@ -583,8 +856,8 @@
       ],
       "path": "/api/v1/cvd/signal",
       "policy_key": "cvd",
-      "tier": "edge",
-      "tier_name": "Edge"
+      "tier": "ultra",
+      "tier_name": "Ultra"
     },
     {
       "anonymous": true,
@@ -712,6 +985,21 @@
       "domain": "forecast",
       "kind": "capability",
       "method": "GET",
+      "name": "forecast.arena_issued",
+      "params": [
+        "ticker=SPX",
+        "replay_t"
+      ],
+      "path": "/api/v1/forecast/arena-issued.json",
+      "policy_key": "forecast",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "forecast",
+      "kind": "capability",
+      "method": "GET",
       "name": "forecast.cone",
       "params": [
         "ticker=SPX",
@@ -738,6 +1026,55 @@
       "policy_key": "forecast",
       "tier": "pro",
       "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "forecast",
+      "kind": "capability",
+      "method": "GET",
+      "name": "forecast.settled_claim",
+      "params": [
+        "ticker=SPX",
+        "day",
+        "claim",
+        "version",
+        "receipt"
+      ],
+      "path": "/api/v1/forecast/settled-claim.json",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "forecast",
+      "kind": "capability",
+      "method": "GET",
+      "name": "forecast.settled_record",
+      "params": [
+        "ticker=SPX",
+        "day",
+        "record",
+        "receipt"
+      ],
+      "path": "/api/v1/forecast/settled-record.json",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "forecast",
+      "kind": "capability",
+      "method": "GET",
+      "name": "forecast.yesterday",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/forecast/yesterday.json",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
     },
     {
       "anonymous": true,
@@ -1529,6 +1866,22 @@
       "domain": "market",
       "kind": "capability",
       "method": "GET",
+      "name": "market.breadth",
+      "params": [
+        "symbols?",
+        "day?",
+        "format?=json"
+      ],
+      "path": "/api/v1/breadth",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "market",
+      "kind": "capability",
+      "method": "GET",
       "name": "market.candles",
       "params": [
         "ticker=SPX",
@@ -1649,6 +2002,20 @@
     },
     {
       "anonymous": true,
+      "domain": "market_weather",
+      "kind": "capability",
+      "method": "GET",
+      "name": "market_weather.today",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/market_weather/today.json",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
       "domain": "meta",
       "kind": "capability",
       "method": "GET",
@@ -1696,6 +2063,60 @@
       "policy_key": "public",
       "tier": "free",
       "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "odds",
+      "kind": "capability",
+      "method": "GET",
+      "name": "odds.reaction",
+      "params": [
+        "domain=MACRO"
+      ],
+      "path": "/api/v1/odds/reaction.json",
+      "policy_key": "odds_reaction",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": true,
+      "domain": "odds_lab",
+      "kind": "capability",
+      "method": "GET",
+      "name": "odds_lab.ledger",
+      "params": [],
+      "path": "/api/v1/odds_ledger.json",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": false,
+      "domain": "odds_lab",
+      "kind": "capability",
+      "method": "GET",
+      "name": "odds_lab.range_budget",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/range_budget.json",
+      "policy_key": "terminal",
+      "tier": "edge",
+      "tier_name": "Edge"
+    },
+    {
+      "anonymous": false,
+      "domain": "odds_lab",
+      "kind": "capability",
+      "method": "GET",
+      "name": "odds_lab.range_odds",
+      "params": [
+        "ticker=SPX"
+      ],
+      "path": "/api/v1/range_odds.json",
+      "policy_key": "forecast",
+      "tier": "pro",
+      "tier_name": "Pro"
     },
     {
       "anonymous": false,
@@ -1781,9 +2202,9 @@
         "format?=json"
       ],
       "path": "/api/v1/orderflow/trade_side",
-      "policy_key": "flow_analytics",
-      "tier": "pro",
-      "tier_name": "Pro"
+      "policy_key": "research_exotics",
+      "tier": "ultra",
+      "tier_name": "Ultra"
     },
     {
       "anonymous": false,
@@ -1796,6 +2217,36 @@
       ],
       "path": "/api/v1/portfolio/positions",
       "policy_key": "portfolio",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "prediction",
+      "kind": "capability",
+      "method": "GET",
+      "name": "prediction.brief",
+      "params": [
+        "ticker=SPX",
+        "day?"
+      ],
+      "path": "/api/v1/prediction/brief.json",
+      "policy_key": "forecast",
+      "tier": "pro",
+      "tier_name": "Pro"
+    },
+    {
+      "anonymous": false,
+      "domain": "prediction",
+      "kind": "capability",
+      "method": "GET",
+      "name": "prediction.receipt",
+      "params": [
+        "ticker=SPX",
+        "day?"
+      ],
+      "path": "/api/v1/prediction/receipt.json",
+      "policy_key": "forecast",
       "tier": "pro",
       "tier_name": "Pro"
     },
@@ -2400,6 +2851,76 @@
         "format?=json"
       ],
       "path": "/api/v1/strategy/shared",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "studies",
+      "kind": "capability",
+      "method": "GET",
+      "name": "studies.book_grader",
+      "params": [
+        "ticker?=SPX",
+        "from?",
+        "to?",
+        "book?=oi|volume",
+        "label?=daily",
+        "max_days?=20"
+      ],
+      "path": "/api/v1/studies/book-grader",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "studies",
+      "kind": "capability",
+      "method": "GET",
+      "name": "studies.sector_gamma",
+      "params": [
+        "basis?=auto|etf_book|weighted_constituents",
+        "zero_tol?",
+        "as_of?"
+      ],
+      "path": "/api/v1/studies/sector-gamma",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "studies",
+      "kind": "capability",
+      "method": "GET",
+      "name": "studies.strike_retro",
+      "params": [
+        "ticker?=SPX",
+        "day?",
+        "top?=10",
+        "rth_only?=true"
+      ],
+      "path": "/api/v1/studies/strike-retro",
+      "policy_key": "public",
+      "tier": "free",
+      "tier_name": "Free"
+    },
+    {
+      "anonymous": true,
+      "domain": "studies",
+      "kind": "capability",
+      "method": "GET",
+      "name": "studies.time_of_day",
+      "params": [
+        "ticker?=SPX",
+        "from?",
+        "to?",
+        "bucket_min?=5",
+        "include_non_rth?=false"
+      ],
+      "path": "/api/v1/studies/time-of-day",
       "policy_key": "public",
       "tier": "free",
       "tier_name": "Free"
